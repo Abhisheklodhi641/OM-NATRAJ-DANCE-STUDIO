@@ -1,0 +1,63 @@
+:root {
+  /* Core Color Palette */
+  --bg-primary: #070709;
+  --bg-secondary: #0e0e12;
+  --bg-tertiary: #16161d;
+  --bg-card: rgba(22, 22, 29, 0.7);
+  --bg-card-hover: rgba(30, 30, 40, 0.85);
+  --bg-glass: rgba(14, 14, 18, 0.75);
+  
+  /* Text & Accent Tones */
+  --text-main: #f7f4ee;
+  --text-muted: #9e9ba7;
+  --text-dim: #6b6875;
+  
+  /* Brand Accents */
+  --accent-gold: #d4af37;
+  --accent-gold-light: #f3d478;
+  --accent-gold-glow: rgba(212, 175, 55, 0.25);
+  
+  --accent-ember: #e2632b;
+  --accent-ember-light: #ff824c;
+  --accent-ember-glow: rgba(226, 99, 43, 0.25);
+  
+  --accent-wine: #871427;
+  --accent-wine-deep: #4d0a15;
+  
+  /* Borders & Dividers */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-gold: rgba(212, 175, 55, 0.3);
+  --border-active: rgba(255, 255, 255, 0.2);
+  
+  /* Typography Families */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
+  
+  /* Transitions */
+  --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.25s var(--ease-smooth);
+  --transition-normal: 0.45s var(--ease-cinematic);
+  --transition-slow: 0.85s var(--ease-cinematic);
+
+  /* Shadows & Glows */
+  --shadow-card: 0 16px 36px rgba(0, 0, 0, 0.45);
+  --shadow-glow-gold: 0 0 45px rgba(212, 175, 55, 0.15);
+  --shadow-glow-ember: 0 0 50px rgba(226, 99, 43, 0.18);
+  
+  /* Layout */
+  --max-width: 1400px;
+  --navbar-height: 84px;
+}
+
+/* Reduced motion preference support */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

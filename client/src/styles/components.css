@@ -1,0 +1,434 @@
+/* Components Design System */
+
+/* Layout Container */
+.site-container {
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1.25rem, 4vw, 3.5rem);
+  padding-right: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+.section-spacer {
+  padding-top: clamp(4.5rem, 9vw, 9rem);
+  padding-bottom: clamp(4.5rem, 9vw, 9rem);
+  position: relative;
+}
+
+/* Custom Cursor (Desktop Only) */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background: var(--accent-gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s var(--ease-smooth), height 0.3s var(--ease-smooth), background-color 0.3s ease, transform 0.1s ease-out;
+  mix-blend-mode: difference;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-cursor.cursor-hover {
+  width: 72px;
+  height: 72px;
+  background: rgba(212, 175, 55, 0.95);
+  mix-blend-mode: normal;
+}
+
+.cursor-text {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  color: #070709;
+  text-transform: uppercase;
+  display: none;
+}
+
+.custom-cursor.cursor-hover .cursor-text {
+  display: block;
+}
+
+@media (pointer: coarse), (max-width: 1024px) {
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
+/* Premium Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 16px 34px;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.35s var(--ease-smooth);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-ember) 100%);
+  color: #070709;
+  box-shadow: 0 8px 24px var(--accent-gold-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px var(--shadow-glow-ember);
+  color: #000;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-main);
+  border-color: var(--border-gold);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent-gold);
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--accent-gold-light);
+  transform: translateY(-3px);
+}
+
+.btn-whatsapp {
+  background: #25d366;
+  color: #070709;
+  border: none;
+  font-weight: 700;
+}
+
+.btn-whatsapp:hover {
+  background: #20ba59;
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
+  transform: translateY(-3px);
+}
+
+/* Navbar */
+.navbar-glass {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease, height 0.4s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.navbar-scrolled {
+  background: rgba(7, 7, 9, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: var(--border-subtle);
+  height: 74px;
+}
+
+.nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  position: relative;
+  padding: 8px 0;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background: var(--accent-gold);
+  transition: width 0.3s var(--ease-smooth);
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--text-main);
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+  width: 100%;
+}
+
+/* Fullscreen Mobile Navigation */
+.mobile-nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 7, 9, 0.98);
+  backdrop-filter: blur(25px);
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2.5rem;
+  transform: translateX(100%);
+  transition: transform 0.5s var(--ease-cinematic);
+}
+
+.mobile-nav-overlay.is-open {
+  transform: translateX(0%);
+}
+
+.mobile-nav-link {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 7vw, 3.4rem);
+  color: var(--text-main);
+  text-decoration: none;
+  margin-bottom: 1.25rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mobile-nav-link:hover {
+  color: var(--accent-gold);
+  transform: translateX(12px);
+}
+
+/* Glass Card Baseline */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.glass-panel:hover {
+  border-color: var(--border-active);
+  box-shadow: var(--shadow-card);
+}
+
+/* Class & Event Cards */
+.class-card {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.45s var(--ease-cinematic);
+}
+
+.class-card:hover {
+  border-color: var(--border-gold);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.class-card-image-box {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+}
+
+.class-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.75s var(--ease-cinematic);
+}
+
+.class-card:hover .class-card-image {
+  transform: scale(1.08);
+}
+
+.class-card-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(7, 7, 9, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-gold);
+  color: var(--accent-gold);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  padding: 6px 14px;
+  text-transform: uppercase;
+}
+
+/* Pinned Storytelling Section */
+.pinned-story-wrapper {
+  position: relative;
+}
+
+.pinned-visual-container {
+  position: sticky;
+  top: 120px;
+  height: calc(100vh - 180px);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.pinned-step-item {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.step-num {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  letter-spacing: 0.25em;
+  color: var(--accent-gold);
+  margin-bottom: 1rem;
+}
+
+/* Lightbox Modal */
+.lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 7, 0.94);
+  backdrop-filter: blur(20px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 1100px;
+  width: 100%;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -48px;
+  right: 0;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px;
+  transition: transform 0.25s ease;
+}
+
+.lightbox-close:hover {
+  transform: rotate(90deg) scale(1.1);
+  color: var(--accent-gold);
+}
+
+/* Forms & Inputs */
+.form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.form-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  background: rgba(18, 18, 24, 0.85);
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px;
+  padding: 14px 18px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 16px var(--accent-gold-glow);
+}
+
+.form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* WhatsApp Floating Action Button */
+.whatsapp-float-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 58px;
+  height: 58px;
+  background: #25d366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #070709;
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+  z-index: 950;
+  text-decoration: none;
+  transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s ease;
+}
+
+.whatsapp-float-btn:hover {
+  transform: scale(1.1) translateY(-4px);
+  box-shadow: 0 12px 32px rgba(37, 211, 102, 0.6);
+}
+
+/* Preloader Loading Screen */
+.preloader-screen {
+  position: fixed;
+  inset: 0;
+  background: #070709;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.7s var(--ease-cinematic), visibility 0.7s;
+}
+
+.preloader-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
