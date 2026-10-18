@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useStudio } from '../context/StudioContext';
 
 export const WorkshopsEvents = ({ events = [] }) => {
-  const { getWhatsAppUrl } = useStudio();
+  const { settings = {}, getWhatsAppUrl } = useStudio();
 
   const eventList = events.length > 0
     ? events
@@ -14,7 +14,7 @@ export const WorkshopsEvents = ({ events = [] }) => {
           name: 'Grand Navratri Garba Intensive Bootcamp',
           date: 'OCT 24 - 28, 2026',
           time: '6:30 PM - 9:00 PM',
-          location: 'Om Natraj Dance Studio, Main Arena, Indore',
+          location: 'Om Natraj Dance Studio, Main Arena',
           description: 'An electrifying 5-day workshop covering authentic Mandvi steps, rapid spinning endurance, and group formations before the festival season kicks off.',
           image: '/images/garba-dance.jpg',
           badge: 'Signature Workshop'
@@ -24,7 +24,7 @@ export const WorkshopsEvents = ({ events = [] }) => {
           _id: '2',
           date: 'NOV 14 - 15, 2026',
           time: '5:00 PM - 8:00 PM',
-          location: 'Om Natraj Dance Studio, Hall B, Indore',
+          location: 'Om Natraj Dance Studio, Hall B',
           description: 'Exclusive 2-day session for brides, grooms, and bridal entourages to polish transitions, stage lift basics, and camera-ready dance poses.',
           image: '/images/wedding-dance.jpg',
           badge: 'Couples & Family'
@@ -34,8 +34,8 @@ export const WorkshopsEvents = ({ events = [] }) => {
           _id: '3',
           date: 'DEC 20, 2026',
           time: '6:00 PM onwards',
-          location: 'Ravindra Natya Grah, Indore, MP',
-          description: 'Our premier annual dance festival where all Om Natraj academy students take the stage in front of a live 1,000+ audience in Indore.',
+          location: 'Grand Auditorium Stage',
+          description: 'Our premier annual dance festival where all academy students take the stage in front of a live 1,000+ audience.',
           image: '/images/hero-dance.jpg',
           badge: 'Annual Concert'
         }
@@ -62,8 +62,8 @@ export const WorkshopsEvents = ({ events = [] }) => {
         {/* Cinematic Event Cards Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-          gap: '2.5rem'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
+          gap: 'clamp(1.5rem, 3vw, 2.5rem)'
         }}>
           {eventList.map((item) => (
             <div
@@ -105,7 +105,7 @@ export const WorkshopsEvents = ({ events = [] }) => {
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-dim)', fontSize: '0.86rem', marginBottom: '1.25rem' }}>
                     <MapPin size={14} color="var(--accent-gold)" />
-                    {item.location || 'Indore Studio'}
+                    {item.location || (settings.city ? `${settings.city} Studio` : 'Main Studio')}
                   </div>
 
                   <p style={{
@@ -127,7 +127,7 @@ export const WorkshopsEvents = ({ events = [] }) => {
                 gap: '12px'
               }}>
                 <a
-                  href={getWhatsAppUrl(`Hi Om Natraj Studio! I would like to book a seat for the "${item.name}" event in Indore.`)}
+                  href={getWhatsAppUrl(`Hi ${settings.studioName || 'Om Natraj Studio'}! I would like to book a seat for the "${item.name}" event${settings.city ? ` in ${settings.city}` : ''}.`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-whatsapp"

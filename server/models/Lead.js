@@ -27,6 +27,11 @@ const LeadSchema = new mongoose.Schema({
     trim: true,
     default: 'Any Style'
   },
+  product: {
+    type: String,
+    trim: true,
+    default: ''
+  },
   message: {
     type: String,
     trim: true,

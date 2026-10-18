@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { useStudio } from '../context/StudioContext';
 
 export const DanceStyles = ({ classes = [] }) => {
+  const { settings } = useStudio();
   // Styles list from classes or editable defaults
   const stylesList = classes.length > 0
     ? classes
@@ -81,8 +83,8 @@ export const DanceStyles = ({ classes = [] }) => {
         {/* Interactive Split Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '3rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
+          gap: 'clamp(2rem, 4vw, 3rem)',
           alignItems: 'center'
         }}>
           
@@ -227,7 +229,7 @@ export const DanceStyles = ({ classes = [] }) => {
                     color: 'var(--accent-gold)',
                     letterSpacing: '0.1em'
                   }}>
-                    BATCHES AVAILABLE IN INDORE
+                    BATCHES AVAILABLE{settings.city ? ` IN ${settings.city.toUpperCase()}` : ' NOW'}
                   </span>
 
                   <Link

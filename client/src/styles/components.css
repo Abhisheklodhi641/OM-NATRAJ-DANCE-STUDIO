@@ -177,15 +177,23 @@
 .mobile-nav-overlay {
   position: fixed;
   inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   background: rgba(7, 7, 9, 0.98);
   backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
   z-index: 1050;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 2.5rem;
+  justify-content: flex-start;
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 1.5rem);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 2rem);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   transform: translateX(100%);
-  transition: transform 0.5s var(--ease-cinematic);
+  transition: transform 0.45s var(--ease-cinematic);
 }
 
 .mobile-nav-overlay.is-open {
@@ -194,19 +202,21 @@
 
 .mobile-nav-link {
   font-family: var(--font-serif);
-  font-size: clamp(2.2rem, 7vw, 3.4rem);
+  font-size: clamp(1.4rem, 4.5vw, 2.4rem);
   color: var(--text-main);
   text-decoration: none;
-  margin-bottom: 1.25rem;
+  min-height: 48px;
+  padding: 6px 0;
   transition: color 0.3s ease, transform 0.3s ease;
   display: flex;
   align-items: center;
   gap: 16px;
+  touch-action: manipulation;
 }
 
-.mobile-nav-link:hover {
+.mobile-nav-link:hover, .mobile-nav-link:active {
   color: var(--accent-gold);
-  transform: translateX(12px);
+  transform: translateX(8px);
 }
 
 /* Glass Card Baseline */
@@ -393,10 +403,10 @@
 /* WhatsApp Floating Action Button */
 .whatsapp-float-btn {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 58px;
-  height: 58px;
+  bottom: clamp(16px, 4vw, 30px);
+  right: clamp(16px, 4vw, 30px);
+  width: 56px;
+  height: 56px;
   background: #25d366;
   border-radius: 50%;
   display: flex;
@@ -407,11 +417,33 @@
   z-index: 950;
   text-decoration: none;
   transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s ease;
+  touch-action: manipulation;
 }
 
 .whatsapp-float-btn:hover {
-  transform: scale(1.1) translateY(-4px);
+  transform: scale(1.08) translateY(-3px);
   box-shadow: 0 12px 32px rgba(37, 211, 102, 0.6);
+}
+
+@media (max-width: 768px) {
+  .form-input, .form-select, .form-textarea, .admin-search-input {
+    font-size: 16px !important; /* Prevents iOS auto-zoom on focus */
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 14px 22px;
+    font-size: 0.82rem;
+  }
+  .whatsapp-float-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 52px;
+    height: 52px;
+  }
 }
 
 /* Preloader Loading Screen */

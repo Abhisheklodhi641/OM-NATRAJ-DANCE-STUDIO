@@ -97,7 +97,7 @@ export const AdminGallery = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '2.5rem' }}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 800, color: '#fff', marginBottom: '4px' }}>
             Gallery & Media Assets
@@ -116,7 +116,7 @@ export const AdminGallery = () => {
       {/* Gallery Media Grid */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))',
         gap: '1.75rem'
       }}>
         {gallery.map((item) => (
@@ -207,10 +207,12 @@ export const AdminGallery = () => {
           <div className="glass-panel" style={{
             maxWidth: '540px',
             width: '100%',
-            padding: '2.5rem',
+            padding: 'clamp(1.25rem, 4vw, 2.5rem)',
             background: '#121218',
             border: '1px solid var(--border-gold)',
-            borderRadius: '8px'
+            borderRadius: '8px',
+            maxHeight: '90vh',
+            overflowY: 'auto'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
               <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: '#fff' }}>

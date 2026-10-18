@@ -102,8 +102,8 @@ export const GalleryPage = () => {
           
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
-            gap: '2rem',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
+            gap: 'clamp(1.25rem, 2.5vw, 2rem)',
             alignItems: 'stretch'
           }}>
             {filtered.map((item, idx) => {

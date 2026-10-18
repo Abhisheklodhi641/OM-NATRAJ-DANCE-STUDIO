@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -46,6 +47,8 @@ const generateId = () => {
   return `${Date.now().toString(36)}${Math.random().toString(36).substring(2, 9)}`;
 };
 
+const isStrictDb = () => process.env.DISABLE_LOCAL_FALLBACK === 'true';
+
 /**
  * Storage Service that abstracts Mongoose and Local Persistent JSON storage
  */
@@ -69,8 +72,13 @@ export const StorageService = {
         const Model = this.collections[collectionName];
         return await Model.find(query).sort(sort).lean();
       } catch (err) {
+        if (isStrictDb()) throw err;
         console.warn(`[Mongo Query Fallback on ${collectionName}]:`, err.message);
       }
+    }
+
+    if (isStrictDb()) {
+      throw new Error(`[Database Error] MongoDB Atlas is not connected and local storage fallback is disabled.`);
     }
 
     // Local JSON Fallback
@@ -99,13 +107,22 @@ export const StorageService = {
 
   async findById(collectionName, id) {
     if (isMongoConnected) {
+      if (!mongoose.isValidObjectId(id)) {
+        return null;
+      }
       try {
         const Model = this.collections[collectionName];
         return await Model.findById(id).lean();
       } catch (err) {
+        if (isStrictDb()) throw err;
         console.warn(`[Mongo findById Fallback]:`, err.message);
       }
     }
+
+    if (isStrictDb()) {
+      throw new Error(`[Database Error] MongoDB Atlas is not connected and local storage fallback is disabled.`);
+    }
+
     const items = readCollection(collectionName);
     return items.find(i => i._id === id || i.id === id) || null;
   },
@@ -116,9 +133,15 @@ export const StorageService = {
         const Model = this.collections[collectionName];
         return await Model.findOne(query).lean();
       } catch (err) {
+        if (isStrictDb()) throw err;
         console.warn(`[Mongo findOne Fallback]:`, err.message);
       }
     }
+
+    if (isStrictDb()) {
+      throw new Error(`[Database Error] MongoDB Atlas is not connected and local storage fallback is disabled.`);
+    }
+
     const items = await this.find(collectionName, query);
     return items[0] || null;
   },
@@ -131,8 +154,13 @@ export const StorageService = {
         const doc = await Model.create(data);
         return doc.toObject();
       } catch (err) {
+        if (isStrictDb()) throw err;
         console.warn(`[Mongo create Fallback]:`, err.message);
       }
+    }
+
+    if (isStrictDb()) {
+      throw new Error(`[Database Error] MongoDB Atlas is not connected and local storage fallback is disabled.`);
     }
 
     const items = readCollection(collectionName);
@@ -150,12 +178,20 @@ export const StorageService = {
   async findByIdAndUpdate(collectionName, id, updateData) {
     const timestamp = new Date().toISOString();
     if (isMongoConnected) {
+      if (!mongoose.isValidObjectId(id)) {
+        return null;
+      }
       try {
         const Model = this.collections[collectionName];
         return await Model.findByIdAndUpdate(id, updateData, { new: true, runValidators: true }).lean();
       } catch (err) {
+        if (isStrictDb()) throw err;
         console.warn(`[Mongo update Fallback]:`, err.message);
       }
+    }
+
+    if (isStrictDb()) {
+      throw new Error(`[Database Error] MongoDB Atlas is not connected and local storage fallback is disabled.`);
     }
 
     const items = readCollection(collectionName);
@@ -173,12 +209,20 @@ export const StorageService = {
 
   async findByIdAndDelete(collectionName, id) {
     if (isMongoConnected) {
+      if (!mongoose.isValidObjectId(id)) {
+        return null;
+      }
       try {
         const Model = this.collections[collectionName];
         return await Model.findByIdAndDelete(id).lean();
       } catch (err) {
+        if (isStrictDb()) throw err;
         console.warn(`[Mongo delete Fallback]:`, err.message);
       }
+    }
+
+    if (isStrictDb()) {
+      throw new Error(`[Database Error] MongoDB Atlas is not connected and local storage fallback is disabled.`);
     }
 
     let items = readCollection(collectionName);
@@ -191,6 +235,14 @@ export const StorageService = {
   },
 
   async count(collectionName, query = {}) {
+    if (isMongoConnected) {
+      try {
+        const Model = this.collections[collectionName];
+        return await Model.countDocuments(query);
+      } catch (err) {
+        if (isStrictDb()) throw err;
+      }
+    }
     const items = await this.find(collectionName, query);
     return items.length;
   }

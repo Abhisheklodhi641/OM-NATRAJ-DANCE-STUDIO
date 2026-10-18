@@ -1,18 +1,30 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import { StorageService } from '../services/storageService.js';
 import { protectAdmin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// POST /api/leads - Public Lead Capture
+const isValidEmail = (email) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
+
+// POST /api/leads - Public Lead/Enquiry Capture
 router.post('/', async (req, res) => {
   try {
-    const { name, phone, email, interestedIn, preferredClass, message } = req.body;
+    const { name, phone, email, interestedIn, preferredClass, product, message } = req.body;
 
-    if (!name || !phone) {
+    if (!name || !name.trim() || !phone || !phone.trim()) {
       return res.status(400).json({
         success: false,
         message: 'Name and Phone number are required'
+      });
+    }
+
+    if (email && email.trim() && !isValidEmail(email.trim())) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid email address format'
       });
     }
 
@@ -20,8 +32,9 @@ router.post('/', async (req, res) => {
       name: name.trim(),
       phone: phone.trim(),
       email: (email || '').trim().toLowerCase(),
-      interestedIn: interestedIn || 'General Dance Training',
+      interestedIn: interestedIn || product || 'General Dance Training',
       preferredClass: preferredClass || 'Any Style',
+      product: (product || '').trim(),
       message: (message || '').trim(),
       status: 'NEW',
       notes: ''
@@ -57,7 +70,8 @@ router.get('/', protectAdmin, async (req, res) => {
         (l.name && l.name.toLowerCase().includes(q)) ||
         (l.phone && l.phone.toLowerCase().includes(q)) ||
         (l.email && l.email.toLowerCase().includes(q)) ||
-        (l.interestedIn && l.interestedIn.toLowerCase().includes(q))
+        (l.interestedIn && l.interestedIn.toLowerCase().includes(q)) ||
+        (l.product && l.product.toLowerCase().includes(q))
       );
     }
 
@@ -72,20 +86,57 @@ router.get('/', protectAdmin, async (req, res) => {
   }
 });
 
-// PATCH /api/leads/:id - Admin update status or notes
+// GET /api/leads/:id - Admin Get Single Lead by ID
+router.get('/:id', protectAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid lead ID format' });
+    }
+
+    const lead = await StorageService.findById('leads', id);
+    if (!lead) {
+      return res.status(404).json({ success: false, message: 'Lead not found' });
+    }
+
+    res.json({
+      success: true,
+      lead
+    });
+  } catch (error) {
+    console.error('Get lead error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch lead' });
+  }
+});
+
+// PATCH /api/leads/:id - Admin update status or details
 router.patch('/:id', protectAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, notes } = req.body;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid lead ID format' });
+    }
+
+    const { status, notes, name, phone, email, product, interestedIn, message } = req.body;
 
     const validStatuses = ['NEW', 'CONTACTED', 'FOLLOW-UP', 'CONVERTED', 'CLOSED'];
     if (status && !validStatuses.includes(status)) {
       return res.status(400).json({ success: false, message: 'Invalid status' });
     }
 
+    if (email && email.trim() && !isValidEmail(email.trim())) {
+      return res.status(400).json({ success: false, message: 'Invalid email address format' });
+    }
+
     const updateData = {};
     if (status) updateData.status = status;
     if (notes !== undefined) updateData.notes = notes;
+    if (name) updateData.name = name.trim();
+    if (phone) updateData.phone = phone.trim();
+    if (email !== undefined) updateData.email = email.trim().toLowerCase();
+    if (product !== undefined) updateData.product = product.trim();
+    if (interestedIn !== undefined) updateData.interestedIn = interestedIn.trim();
+    if (message !== undefined) updateData.message = message.trim();
 
     const updatedLead = await StorageService.findByIdAndUpdate('leads', id, updateData);
     if (!updatedLead) {
@@ -103,10 +154,50 @@ router.patch('/:id', protectAdmin, async (req, res) => {
   }
 });
 
+// PUT /api/leads/:id - Admin complete update lead
+router.put('/:id', protectAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid lead ID format' });
+    }
+
+    const { status, notes, name, phone, email, product, interestedIn, message, preferredClass } = req.body;
+    const updateData = {};
+    if (status) updateData.status = status;
+    if (notes !== undefined) updateData.notes = notes;
+    if (name) updateData.name = name.trim();
+    if (phone) updateData.phone = phone.trim();
+    if (email !== undefined) updateData.email = email.trim().toLowerCase();
+    if (product !== undefined) updateData.product = product.trim();
+    if (interestedIn !== undefined) updateData.interestedIn = interestedIn.trim();
+    if (preferredClass !== undefined) updateData.preferredClass = preferredClass.trim();
+    if (message !== undefined) updateData.message = message.trim();
+
+    const updatedLead = await StorageService.findByIdAndUpdate('leads', id, updateData);
+    if (!updatedLead) {
+      return res.status(404).json({ success: false, message: 'Lead not found' });
+    }
+
+    res.json({
+      success: true,
+      message: 'Lead updated successfully',
+      lead: updatedLead
+    });
+  } catch (error) {
+    console.error('Put lead error:', error);
+    res.status(500).json({ success: false, message: 'Failed to update lead' });
+  }
+});
+
 // DELETE /api/leads/:id - Admin delete lead
 router.delete('/:id', protectAdmin, async (req, res) => {
   try {
     const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid lead ID format' });
+    }
+
     const deleted = await StorageService.findByIdAndDelete('leads', id);
     if (!deleted) {
       return res.status(404).json({ success: false, message: 'Lead not found' });

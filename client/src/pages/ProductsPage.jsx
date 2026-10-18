@@ -4,7 +4,7 @@ import { api } from '../services/api';
 import { useStudio } from '../context/StudioContext';
 
 export const ProductsPage = () => {
-  const { getProductWhatsAppUrl } = useStudio();
+  const { getProductWhatsAppUrl, settings = {} } = useStudio();
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState('All');
   const [selectedSizes, setSelectedSizes] = useState({});
@@ -64,7 +64,7 @@ export const ProductsPage = () => {
             lineHeight: 1.5,
             fontWeight: 300
           }}>
-            Handcrafted traditional attire, authentic brass ghungroos, carved dandiya sticks, and dance rehearsal essentials available in Indore.
+            Handcrafted traditional attire, authentic brass ghungroos, carved dandiya sticks, and dance rehearsal essentials{settings.city ? ` available in ${settings.city}` : ''}.
           </p>
 
           {/* Customer Name Customizer Input */}
@@ -132,8 +132,8 @@ export const ProductsPage = () => {
           
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '2.5rem'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+            gap: 'clamp(1.5rem, 3vw, 2.5rem)'
           }}>
             {filtered.map((product) => {
               const currentSize = selectedSizes[product._id] || (product.sizes && product.sizes[0]) || 'Free Size';

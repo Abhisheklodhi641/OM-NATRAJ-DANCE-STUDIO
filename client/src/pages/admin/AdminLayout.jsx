@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -12,12 +12,15 @@ import {
   BarChart3,
   Settings,
   LogOut,
-  ExternalLink
+  ExternalLink,
+  Menu,
+  X
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export const AdminLayout = () => {
   const { admin, loading, logout, isAuthenticated } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   if (loading) {
@@ -53,8 +56,70 @@ export const AdminLayout = () => {
 
   return (
     <div className="admin-layout">
-      {/* Sidebar */}
-      <aside className="admin-sidebar">
+      {/* Mobile Top Navigation Bar */}
+      <header className="admin-mobile-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button
+            onClick={() => setSidebarOpen(prev => !prev)}
+            aria-label={sidebarOpen ? "Close admin navigation menu" : "Open admin navigation menu"}
+            className="admin-menu-toggle"
+          >
+            {sidebarOpen ? <X size={24} color="var(--accent-gold)" /> : <Menu size={24} color="#fff" />}
+          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 800, color: '#fff' }}>
+              OM NATRAJ
+            </span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', letterSpacing: '0.15em', color: 'var(--accent-gold)' }}>
+              ADMIN
+            </span>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <Link
+            to="/"
+            target="_blank"
+            style={{
+              color: 'var(--text-muted)',
+              display: 'flex',
+              alignItems: 'center',
+              padding: '8px',
+              textDecoration: 'none'
+            }}
+            aria-label="View Public Website"
+          >
+            <ExternalLink size={18} />
+          </Link>
+
+          <button
+            onClick={handleLogout}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#ef5350',
+              cursor: 'pointer',
+              padding: '8px',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+            aria-label="Sign Out"
+          >
+            <LogOut size={18} />
+          </button>
+        </div>
+      </header>
+
+      {/* Backdrop Overlay on Mobile */}
+      {sidebarOpen && (
+        <div
+          className="admin-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar Drawer */}
+      <aside className={`admin-sidebar ${sidebarOpen ? 'is-open' : ''}`}>
         <div className="admin-brand">
           <div style={{
             width: '34px',
@@ -92,6 +157,7 @@ export const AdminLayout = () => {
                 key={item.path}
                 to={item.path}
                 end={item.end}
+                onClick={() => setSidebarOpen(false)}
                 className={({ isActive }) => `admin-nav-item ${isActive ? 'active' : ''}`}
               >
                 <Icon size={18} />
@@ -106,6 +172,7 @@ export const AdminLayout = () => {
           <Link
             to="/"
             target="_blank"
+            onClick={() => setSidebarOpen(false)}
             style={{
               display: 'flex',
               alignItems: 'center',

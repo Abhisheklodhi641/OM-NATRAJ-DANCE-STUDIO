@@ -27,7 +27,7 @@ export const AboutPage = () => {
             lineHeight: 1.5,
             fontWeight: 300
           }}>
-            OM NATRAJ DANCE STUDIO was founded in Indore with a singular vision: to create a home where Indian rhythmic roots meet modern contemporary choreography.
+            {settings.studioName || 'OM NATRAJ DANCE STUDIO'} was founded{settings.city ? ` in ${settings.city}` : ''} with a singular vision: to create a home where Indian rhythmic roots meet modern contemporary choreography.
           </p>
         </div>
       </section>
@@ -37,8 +37,8 @@ export const AboutPage = () => {
         <div className="site-container">
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '4rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+            gap: 'clamp(2rem, 4vw, 4rem)',
             alignItems: 'center'
           }}>
             {/* Visual Box */}
@@ -50,7 +50,7 @@ export const AboutPage = () => {
               boxShadow: '0 20px 50px rgba(0,0,0,0.6)'
             }}>
               <img
-                src="/images/studio-interior.jpg"
+                src={settings.aboutImage || "/images/studio-interior.jpg"}
                 alt="Om Natraj Dance Studio Space"
                 style={{ width: '100%', height: '480px', objectFit: 'cover' }}
               />
@@ -66,7 +66,7 @@ export const AboutPage = () => {
                 borderRadius: '4px'
               }}>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--accent-gold)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-                  THE STUDIO FACILITY • INDORE
+                  THE STUDIO FACILITY • {(settings.city || 'ACADEMY').toUpperCase()}
                 </span>
                 <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', color: '#fff', fontStyle: 'italic', marginTop: '4px' }}>
                   Acoustically treated studio, sprung wooden dance flooring & cinematic ambient stage lighting.
@@ -82,11 +82,11 @@ export const AboutPage = () => {
               </h2>
 
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: '1.5rem' }}>
-                At Om Natraj Dance Studio, dance is not treated as mere physical exercise or memorizing rigid steps. It is a language of emotion, culture, and individual empowerment.
+                At {settings.studioName || 'Om Natraj Dance Studio'}, dance is not treated as mere physical exercise or memorizing rigid steps. It is a language of emotion, culture, and individual empowerment.
               </p>
 
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: '2.5rem' }}>
-                From authentic Gujarat and Malwa folk Garba traditions to high-velocity commercial Bollywood and expressive lyrical Contemporary, our faculty ensures students master musicality, stamina, stage presence, and confidence.
+                From authentic folk Garba traditions to high-velocity commercial Bollywood and expressive lyrical Contemporary, our faculty ensures students master musicality, stamina, stage presence, and confidence.
               </p>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
@@ -100,10 +100,10 @@ export const AboutPage = () => {
                 </div>
                 <div style={{ borderLeft: '2px solid var(--accent-gold)', paddingLeft: '14px' }}>
                   <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--accent-gold)', fontWeight: 700 }}>
-                    Indore
+                    {settings.city || 'Madhya Pradesh'}
                   </h4>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                    Heart of Madhya Pradesh
+                    {settings.state ? `Heart of ${settings.state}` : 'Studio Academy'}
                   </span>
                 </div>
               </div>
@@ -131,7 +131,7 @@ export const AboutPage = () => {
             <h2 className="editorial-section-title">Designed for <span className="editorial-italic">High Performance</span></h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 'clamp(1.5rem, 3vw, 2rem)' }}>
             <div className="glass-panel" style={{ padding: '2.5rem' }}>
               <div style={{ color: 'var(--accent-gold)', marginBottom: '1.25rem' }}>
                 <Compass size={32} />

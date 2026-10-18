@@ -24,6 +24,7 @@ export const HomePage = () => {
   const [videos, setVideos] = useState([]);
   const [products, setProducts] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
+  const [gallery, setGallery] = useState([]);
 
   // Media Modal state
   const [modalMedia, setModalMedia] = useState({
@@ -36,12 +37,13 @@ export const HomePage = () => {
   useEffect(() => {
     const loadHomeData = async () => {
       try {
-        const [clsRes, evRes, vidRes, prodRes, testRes] = await Promise.allSettled([
+        const [clsRes, evRes, vidRes, prodRes, testRes, galRes] = await Promise.allSettled([
           api.getClasses('active'),
           api.getEvents('upcoming'),
           api.getVideos(),
           api.getProducts(),
-          api.getTestimonials()
+          api.getTestimonials(),
+          api.getGallery()
         ]);
 
         if (clsRes.status === 'fulfilled' && clsRes.value.classes) setClasses(clsRes.value.classes);
@@ -49,6 +51,9 @@ export const HomePage = () => {
         if (vidRes.status === 'fulfilled' && vidRes.value.videos) setVideos(vidRes.value.videos);
         if (prodRes.status === 'fulfilled' && prodRes.value.products) setProducts(prodRes.value.products);
         if (testRes.status === 'fulfilled' && testRes.value.testimonials) setTestimonials(testRes.value.testimonials);
+        if (galRes.status === 'fulfilled' && (galRes.value.gallery || galRes.value.items)) {
+          setGallery(galRes.value.gallery || galRes.value.items);
+        }
       } catch (e) {
         console.warn('Home data partial load fallback:', e);
       }
@@ -97,7 +102,7 @@ export const HomePage = () => {
       <PinnedStory />
 
       {/* 6. Horizontal Gallery ("Move. Feel. Express.") */}
-      <HorizontalGallery onImageClick={openImageModal} />
+      <HorizontalGallery items={gallery} onImageClick={openImageModal} />
 
       {/* 7. Statistics Animated Counters */}
       <StatisticsCounter />
@@ -145,7 +150,7 @@ export const HomePage = () => {
             marginBottom: '2.5rem',
             fontWeight: 300
           }}>
-            Whether you are stepping into a dance studio for the first time, preparing for Navratri Garba, or choreographing a royal wedding in Indore, we are here to guide every step.
+            Whether you are stepping into a dance studio for the first time, preparing for Navratri Garba, or choreographing a royal wedding{settings.city ? ` in ${settings.city}` : ''}, we are here to guide every step.
           </p>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '18px' }}>
@@ -174,8 +179,8 @@ export const HomePage = () => {
           
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '4rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+            gap: 'clamp(2rem, 4vw, 4rem)',
             alignItems: 'center'
           }}>
             
@@ -183,7 +188,7 @@ export const HomePage = () => {
             <div>
               <span className="section-eyebrow">Studio Location & Inquiries</span>
               <h2 className="editorial-section-title" style={{ marginBottom: '1.75rem' }}>
-                Visit Our Studio <span className="editorial-italic">In Indore</span>
+                Visit Our Studio <span className="editorial-italic">{settings.city ? `In ${settings.city}` : 'Today'}</span>
               </h2>
 
               <p style={{
@@ -198,59 +203,63 @@ export const HomePage = () => {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '2.5rem' }}>
                 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <div style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '4px',
-                    background: 'rgba(212, 175, 55, 0.1)',
-                    border: '1px solid var(--border-gold)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--accent-gold)'
-                  }}>
-                    <Phone size={20} />
+                {settings.phone && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <div style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '4px',
+                      background: 'rgba(212, 175, 55, 0.1)',
+                      border: '1px solid var(--border-gold)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--accent-gold)'
+                    }}>
+                      <Phone size={20} />
+                    </div>
+                    <div>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', letterSpacing: '0.12em', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
+                        Call Us Directly
+                      </span>
+                      <a
+                        href={`tel:${settings.phone}`}
+                        style={{ display: 'block', fontSize: '1.1rem', color: '#fff', fontWeight: 600 }}
+                      >
+                        {settings.phone}
+                      </a>
+                    </div>
                   </div>
-                  <div>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', letterSpacing: '0.12em', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
-                      Call Us Directly
-                    </span>
-                    <a
-                      href={`tel:${settings.phone || '+919713799075'}`}
-                      style={{ display: 'block', fontSize: '1.1rem', color: '#fff', fontWeight: 600 }}
-                    >
-                      {settings.phone || '+91 9713799075'}
-                    </a>
-                  </div>
-                </div>
+                )}
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <div style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '4px',
-                    background: 'rgba(212, 175, 55, 0.1)',
-                    border: '1px solid var(--border-gold)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--accent-gold)'
-                  }}>
-                    <Mail size={20} />
+                {settings.email && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <div style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '4px',
+                      background: 'rgba(212, 175, 55, 0.1)',
+                      border: '1px solid var(--border-gold)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--accent-gold)'
+                    }}>
+                      <Mail size={20} />
+                    </div>
+                    <div>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', letterSpacing: '0.12em', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
+                        Email Inquiries
+                      </span>
+                      <a
+                        href={`mailto:${settings.email}`}
+                        style={{ display: 'block', fontSize: '1.05rem', color: 'var(--text-muted)' }}
+                      >
+                        {settings.email}
+                      </a>
+                    </div>
                   </div>
-                  <div>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', letterSpacing: '0.12em', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
-                      Email Inquiries
-                    </span>
-                    <a
-                      href={`mailto:${settings.email || 'kushanikt667@gmail.com'}`}
-                      style={{ display: 'block', fontSize: '1.05rem', color: 'var(--text-muted)' }}
-                    >
-                      {settings.email || 'kushanikt667@gmail.com'}
-                    </a>
-                  </div>
-                </div>
+                )}
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <div style={{
@@ -271,7 +280,7 @@ export const HomePage = () => {
                       Academy Address
                     </span>
                     <span style={{ display: 'block', fontSize: '1.05rem', color: '#fff' }}>
-                      {settings.address || 'Indore, Madhya Pradesh, India'}
+                      {settings.address || 'Studio Academy'}
                     </span>
                   </div>
                 </div>

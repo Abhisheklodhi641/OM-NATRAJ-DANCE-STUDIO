@@ -61,7 +61,7 @@ export const processUploadedFile = async (file) => {
         resource_type: isVideo ? 'video' : 'image',
         folder: 'om_natraj_dance_studio'
       });
-      // Optionally clean up local temp file after cloud upload
+      // Clean up local temp file after cloud upload
       try {
         fs.unlinkSync(file.path);
       } catch (err) {
@@ -74,7 +74,11 @@ export const processUploadedFile = async (file) => {
         resourceType: isVideo ? 'video' : 'image'
       };
     } catch (cloudErr) {
-      console.error('[Cloudinary Upload Error]', cloudErr.message, '- falling back to local file URL.');
+      console.error('[Cloudinary Upload Error]', cloudErr.message);
+      if (process.env.DISABLE_LOCAL_FALLBACK === 'true') {
+        throw new Error(`Cloudinary upload failed: ${cloudErr.message}`);
+      }
+      console.warn('Falling back to local file URL.');
     }
   }
 
@@ -86,4 +90,35 @@ export const processUploadedFile = async (file) => {
     format: path.extname(file.filename).replace('.', ''),
     resourceType: file.mimetype.startsWith('video/') ? 'video' : 'image'
   };
+};
+
+/**
+ * Helper to delete an asset from Cloudinary or local storage
+ */
+export const deleteUploadedFile = async (publicId, resourceType = 'image') => {
+  if (!publicId) return false;
+
+  if (isCloudinaryConfigured && !publicId.startsWith('/') && !publicId.includes('\\')) {
+    try {
+      const res = await cloudinary.uploader.destroy(publicId, { resource_type: resourceType });
+      return res;
+    } catch (cloudErr) {
+      console.warn('[Cloudinary Delete Warning]', cloudErr.message);
+      if (process.env.DISABLE_LOCAL_FALLBACK === 'true') {
+        throw new Error(`Cloudinary deletion failed: ${cloudErr.message}`);
+      }
+    }
+  }
+
+  // Local storage cleanup
+  const localPath = path.join(uploadDir, path.basename(publicId));
+  if (fs.existsSync(localPath)) {
+    try {
+      fs.unlinkSync(localPath);
+      return true;
+    } catch (err) {
+      // ignore
+    }
+  }
+  return false;
 };

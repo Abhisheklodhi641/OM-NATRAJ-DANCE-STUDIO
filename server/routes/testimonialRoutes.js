@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import { StorageService } from '../services/storageService.js';
 import { protectAdmin } from '../middleware/authMiddleware.js';
 
@@ -15,6 +16,21 @@ router.get('/', async (req, res) => {
     res.json({ success: true, count: items.length, testimonials: items });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to fetch testimonials' });
+  }
+});
+
+// GET /api/testimonials/:id - Public
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid testimonial ID format' });
+    }
+    const item = await StorageService.findById('testimonials', id);
+    if (!item) return res.status(404).json({ success: false, message: 'Testimonial not found' });
+    res.json({ success: true, testimonial: item });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error fetching testimonial' });
   }
 });
 
@@ -44,7 +60,11 @@ router.post('/', protectAdmin, async (req, res) => {
 // PUT /api/testimonials/:id - Admin
 router.put('/:id', protectAdmin, async (req, res) => {
   try {
-    const updated = await StorageService.findByIdAndUpdate('testimonials', req.params.id, req.body);
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid testimonial ID format' });
+    }
+    const updated = await StorageService.findByIdAndUpdate('testimonials', id, req.body);
     if (!updated) return res.status(404).json({ success: false, message: 'Testimonial not found' });
     res.json({ success: true, message: 'Testimonial updated', testimonial: updated });
   } catch (error) {
@@ -55,7 +75,11 @@ router.put('/:id', protectAdmin, async (req, res) => {
 // DELETE /api/testimonials/:id - Admin
 router.delete('/:id', protectAdmin, async (req, res) => {
   try {
-    const deleted = await StorageService.findByIdAndDelete('testimonials', req.params.id);
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid testimonial ID format' });
+    }
+    const deleted = await StorageService.findByIdAndDelete('testimonials', id);
     if (!deleted) return res.status(404).json({ success: false, message: 'Testimonial not found' });
     res.json({ success: true, message: 'Testimonial deleted' });
   } catch (error) {

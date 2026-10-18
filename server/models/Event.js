@@ -16,7 +16,7 @@ const EventSchema = new mongoose.Schema({
   },
   location: {
     type: String,
-    default: 'Indore, MP'
+    default: 'Banmore, Morena, MP'
   },
   description: {
     type: String,

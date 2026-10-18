@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import { StorageService } from '../services/storageService.js';
 import { protectAdmin } from '../middleware/authMiddleware.js';
 
@@ -16,6 +17,21 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/events/:id - Public
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid event ID format' });
+    }
+    const event = await StorageService.findById('events', id);
+    if (!event) return res.status(404).json({ success: false, message: 'Event not found' });
+    res.json({ success: true, event });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error fetching event' });
+  }
+});
+
 // POST /api/events - Admin
 router.post('/', protectAdmin, async (req, res) => {
   try {
@@ -28,7 +44,7 @@ router.post('/', protectAdmin, async (req, res) => {
       name: name.trim(),
       date: date.trim(),
       time: time || '6:00 PM onwards',
-      location: location || 'Om Natraj Dance Studio, Indore',
+      location: location || 'Om Natraj Dance Studio, Banmore, Morena',
       description: description.trim(),
       image: image || '/images/garba-dance.jpg',
       badge: badge || 'Workshop',
@@ -44,7 +60,11 @@ router.post('/', protectAdmin, async (req, res) => {
 // PUT /api/events/:id - Admin
 router.put('/:id', protectAdmin, async (req, res) => {
   try {
-    const updated = await StorageService.findByIdAndUpdate('events', req.params.id, req.body);
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid event ID format' });
+    }
+    const updated = await StorageService.findByIdAndUpdate('events', id, req.body);
     if (!updated) return res.status(404).json({ success: false, message: 'Event not found' });
     res.json({ success: true, message: 'Event updated successfully', event: updated });
   } catch (error) {
@@ -55,7 +75,11 @@ router.put('/:id', protectAdmin, async (req, res) => {
 // DELETE /api/events/:id - Admin
 router.delete('/:id', protectAdmin, async (req, res) => {
   try {
-    const deleted = await StorageService.findByIdAndDelete('events', req.params.id);
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid event ID format' });
+    }
+    const deleted = await StorageService.findByIdAndDelete('events', id);
     if (!deleted) return res.status(404).json({ success: false, message: 'Event not found' });
     res.json({ success: true, message: 'Event deleted successfully' });
   } catch (error) {

@@ -88,8 +88,8 @@ export const ClassesPage = () => {
           
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: '2.5rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+            gap: 'clamp(1.5rem, 3vw, 2.5rem)',
             marginBottom: '5rem'
           }}>
             {filtered.map((item) => (
@@ -159,7 +159,7 @@ export const ClassesPage = () => {
 
                 <div style={{ padding: '0 2rem 2rem 2rem', display: 'flex', gap: '12px' }}>
                   <a
-                    href={getWhatsAppUrl(`Hi Om Natraj Studio! I would like to enquire about the "${item.name}" batch in Indore.`)}
+                    href={getWhatsAppUrl(`Hi ${settings.studioName || 'Om Natraj Studio'}! I would like to enquire about the "${item.name}" batch${settings.city ? ` in ${settings.city}` : ''}.`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-whatsapp"

@@ -75,7 +75,7 @@ export const AdminDashboard = () => {
       {/* Metrics Row */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
         gap: '1.5rem',
         marginBottom: '2.5rem'
       }}>
@@ -150,7 +150,7 @@ export const AdminDashboard = () => {
 
       {/* Recent Enquiries Table */}
       <div className="admin-card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
           <div>
             <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.6rem', color: '#fff' }}>
               Recent Student Inquiries
@@ -171,7 +171,7 @@ export const AdminDashboard = () => {
             No enquiries received yet. Forms submitted on the website will instantly appear here.
           </div>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
+          <div className="admin-table-container">
             <table className="admin-table">
               <thead>
                 <tr>

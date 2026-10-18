@@ -80,8 +80,8 @@ export const ProductsShowcase = ({ products = [] }) => {
         {/* Products Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '2.5rem'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+          gap: 'clamp(1.5rem, 3vw, 2.5rem)'
         }}>
           {productList.map((product) => {
             const currentSize = selectedSizes[product._id] || (product.sizes && product.sizes[0]) || 'Free Size';

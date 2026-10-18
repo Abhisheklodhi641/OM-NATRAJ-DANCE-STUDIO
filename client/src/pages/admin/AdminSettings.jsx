@@ -1,25 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { Save, Settings, Phone, MessageSquare, Mail, MapPin, Check } from 'lucide-react';
+import { Save, Settings, Phone, MessageSquare, Mail, MapPin, Check, Map } from 'lucide-react';
 import { api } from '../../services/api';
 import { useStudio } from '../../context/StudioContext';
 
 export const AdminSettings = () => {
   const { refreshSettings } = useStudio();
   const [formData, setFormData] = useState({
-    studioName: 'OM NATRAJ DANCE STUDIO',
-    tagline: 'Where Movement Becomes Expression.',
-    secondaryText: 'Learn. Move. Perform. Create.',
-    phone: '+91 9713799075',
-    whatsappNumber: '919713799075',
-    email: 'kushanikt667@gmail.com',
-    address: 'Indore, Madhya Pradesh, India',
-    city: 'Indore',
-    state: 'Madhya Pradesh',
-    youtubeUrl: 'https://www.youtube.com/@OMNDS',
-    instagramUrl: 'https://instagram.com/omnatrajdancestudio',
-    introHeading: "Dance is not just about learning steps.\nIt's about finding your own rhythm.",
-    introSubtext: 'Rooted in the timeless grace of Indian rhythm and propelled by cutting-edge contemporary choreography. We mold aspiring dancers into stage-ready performers right here in Indore.',
-    footerText: 'A premier dance academy fostering rhythm, confidence, and artistic performance in Indore, Madhya Pradesh.'
+    studioName: '',
+    tagline: '',
+    secondaryText: '',
+    phone: '',
+    whatsappNumber: '',
+    email: '',
+    address: '',
+    city: '',
+    state: '',
+    country: 'India',
+    googleMapsUrl: '',
+    latitude: '',
+    longitude: '',
+    youtubeUrl: '',
+    instagramUrl: '',
+    facebookUrl: '',
+    introHeading: '',
+    introSubtext: '',
+    footerText: ''
   });
 
   const [loading, setLoading] = useState(true);
@@ -31,7 +36,12 @@ export const AdminSettings = () => {
       try {
         const res = await api.getSettings();
         if (res.success && res.settings) {
-          setFormData(prev => ({ ...prev, ...res.settings }));
+          setFormData(prev => ({
+            ...prev,
+            ...res.settings,
+            latitude: res.settings.latitude ?? '',
+            longitude: res.settings.longitude ?? ''
+          }));
         }
       } catch (err) {
         console.warn('Failed to load settings:', err);
@@ -53,7 +63,12 @@ export const AdminSettings = () => {
     setSuccessMsg('');
 
     try {
-      await api.updateSettings(formData);
+      const payload = {
+        ...formData,
+        latitude: formData.latitude !== '' ? parseFloat(formData.latitude) : null,
+        longitude: formData.longitude !== '' ? parseFloat(formData.longitude) : null,
+      };
+      await api.updateSettings(payload);
       await refreshSettings();
       setSuccessMsg('Studio settings saved and published to website!');
       setTimeout(() => setSuccessMsg(''), 4000);
@@ -66,13 +81,13 @@ export const AdminSettings = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '2.5rem' }}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 800, color: '#fff', marginBottom: '4px' }}>
             Studio Settings & Branding
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem' }}>
-            Update contact numbers, WhatsApp redirection target, email, location, and hero statements.
+            Update contact numbers, WhatsApp redirection target, email, location, Google Maps, and hero statements.
           </p>
         </div>
 
@@ -85,7 +100,7 @@ export const AdminSettings = () => {
       {successMsg && (
         <div style={{
           background: 'rgba(76, 175, 80, 0.15)',
-          border: '1px solid rgba(76, 175, 80, 0.4)',
+          border: '1px solid rgba(76, 175, 80, 0.3)',
           color: '#81c784',
           padding: '14px 20px',
           borderRadius: '4px',
@@ -107,7 +122,7 @@ export const AdminSettings = () => {
             Direct Contact & Messaging
           </h3>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.5rem' }}>
             <div className="form-group">
               <label className="form-label">Studio Phone Number</label>
               <div style={{ position: 'relative' }}>
@@ -116,6 +131,7 @@ export const AdminSettings = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
+                  placeholder="+91 97137 99075"
                   className="form-input"
                   style={{ paddingLeft: '44px' }}
                 />
@@ -124,21 +140,21 @@ export const AdminSettings = () => {
             </div>
 
             <div className="form-group">
-              <label className="form-label">WhatsApp Number (Digits only, including country code)</label>
+              <label className="form-label">WhatsApp Number (Digits only with country code)</label>
               <div style={{ position: 'relative' }}>
                 <input
                   type="text"
                   name="whatsappNumber"
                   value={formData.whatsappNumber}
                   onChange={handleChange}
-                  placeholder="919713799075"
+                  placeholder="919876543210"
                   className="form-input"
                   style={{ paddingLeft: '44px' }}
                 />
                 <MessageSquare size={18} color="#25d366" style={{ position: 'absolute', left: '16px', top: '16px' }} />
               </div>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '4px', display: 'block' }}>
-                e.g. 919713799075 (Controls all WhatsApp enquiry CTA buttons on the site)
+                e.g. 919876543210 (Controls all WhatsApp enquiry CTA buttons on the site)
               </span>
             </div>
 
@@ -150,6 +166,7 @@ export const AdminSettings = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  placeholder="contact@studio.com"
                   className="form-input"
                   style={{ paddingLeft: '44px' }}
                 />
@@ -158,7 +175,7 @@ export const AdminSettings = () => {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '1.5rem', marginTop: '1rem' }}>
             <div className="form-group">
               <label className="form-label">Studio Address / Location</label>
               <div style={{ position: 'relative' }}>
@@ -167,6 +184,7 @@ export const AdminSettings = () => {
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
+                  placeholder="Full studio street address"
                   className="form-input"
                   style={{ paddingLeft: '44px' }}
                 />
@@ -181,8 +199,74 @@ export const AdminSettings = () => {
                 name="city"
                 value={formData.city}
                 onChange={handleChange}
+                placeholder="City"
                 className="form-input"
               />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">State</label>
+              <input
+                type="text"
+                name="state"
+                value={formData.state}
+                onChange={handleChange}
+                placeholder="State"
+                className="form-input"
+              />
+            </div>
+          </div>
+
+          {/* Dynamic Map Settings */}
+          <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '1.5rem', marginTop: '1.5rem' }}>
+            <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.2rem', color: '#fff', marginBottom: '1rem' }}>
+              Google Maps Configuration
+            </h4>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '1.5rem' }}>
+              <div className="form-group">
+                <label className="form-label">Custom Google Maps Embed / Share URL (Optional)</label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type="text"
+                    name="googleMapsUrl"
+                    value={formData.googleMapsUrl}
+                    onChange={handleChange}
+                    placeholder="https://maps.google.com/maps?q=... or embed iframe URL"
+                    className="form-input"
+                    style={{ paddingLeft: '44px' }}
+                  />
+                  <Map size={18} color="var(--accent-gold)" style={{ position: 'absolute', left: '16px', top: '16px' }} />
+                </div>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '4px', display: 'block' }}>
+                  Leave empty to auto-generate from Address and City
+                </span>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Latitude (Optional)</label>
+                <input
+                  type="number"
+                  step="any"
+                  name="latitude"
+                  value={formData.latitude}
+                  onChange={handleChange}
+                  placeholder="e.g. 26.354"
+                  className="form-input"
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Longitude (Optional)</label>
+                <input
+                  type="number"
+                  step="any"
+                  name="longitude"
+                  value={formData.longitude}
+                  onChange={handleChange}
+                  placeholder="e.g. 78.118"
+                  className="form-input"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -235,6 +319,18 @@ export const AdminSettings = () => {
                 </div>
               </div>
             </div>
+
+            <div className="form-group">
+              <label className="form-label">Facebook Page URL (Optional)</label>
+              <input
+                type="url"
+                name="facebookUrl"
+                value={formData.facebookUrl}
+                onChange={handleChange}
+                placeholder="https://facebook.com/..."
+                className="form-input"
+              />
+            </div>
           </div>
         </div>
 
@@ -282,6 +378,17 @@ export const AdminSettings = () => {
             <textarea
               name="introHeading"
               value={formData.introHeading}
+              onChange={handleChange}
+              className="form-textarea"
+              style={{ minHeight: '80px' }}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Intro Subtext / Paragraph</label>
+            <textarea
+              name="introSubtext"
+              value={formData.introSubtext}
               onChange={handleChange}
               className="form-textarea"
               style={{ minHeight: '80px' }}

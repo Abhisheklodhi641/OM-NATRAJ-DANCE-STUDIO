@@ -3,9 +3,12 @@ import { Sparkles, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+import { useStudio } from '../context/StudioContext';
+
 gsap.registerPlugin(ScrollTrigger);
 
 export const PinnedStory = () => {
+  const { settings } = useStudio();
   const [activeStep, setActiveStep] = useState(0);
   const containerRef = useRef(null);
 
@@ -14,8 +17,8 @@ export const PinnedStory = () => {
       num: '01',
       title: 'FIND YOUR RHYTHM',
       subtitle: 'The Awakening of Movement',
-      desc: 'Step into an inspiring environment in Indore where rhythm becomes second nature. Whether starting with basic counts or Kathak tatkar, you unlock your body’s natural instinct for tempo and musicality.',
-      image: '/images/hero-dance.jpg',
+      desc: 'Step into an inspiring environment where rhythm becomes second nature. Whether starting with basic counts or Kathak tatkar, you unlock your body’s natural instinct for tempo and musicality.',
+      image: settings?.heroMedia || 'https://res.cloudinary.com/dwcat1ge5/image/upload/v1792325107/om_natraj_dance_studio/static/hero-dance.jpg',
       quote: 'Every dancer starts with a single beat.'
     },
     {
@@ -23,7 +26,7 @@ export const PinnedStory = () => {
       title: 'BUILD YOUR CONFIDENCE',
       subtitle: 'Technique Meets Emotion',
       desc: 'Move past self-doubt. Under the guidance of master choreographers, you develop sharp isolations, graceful arm extensions, posture, and facial expressions that speak louder than words.',
-      image: '/images/garba-dance.jpg',
+      image: settings?.ctaImage || 'https://res.cloudinary.com/dwcat1ge5/image/upload/v1792325105/om_natraj_dance_studio/static/garba-dance.jpg',
       quote: 'Confidence is born when technique turns into feeling.'
     },
     {
@@ -31,7 +34,7 @@ export const PinnedStory = () => {
       title: 'OWN THE STAGE',
       subtitle: 'The Electric Spotlight',
       desc: 'From intimate studio reels to grand Navratri arenas and annual concerts in front of 1,000+ viewers, you experience the unforgettable rush of live applause and artistic fulfillment.',
-      image: '/images/wedding-dance.jpg',
+      image: 'https://res.cloudinary.com/dwcat1ge5/image/upload/v1792325112/om_natraj_dance_studio/static/wedding-dance.jpg',
       quote: 'When the spotlight hits, you don’t just perform — you inspire.'
     }
   ];
@@ -73,8 +76,8 @@ export const PinnedStory = () => {
         {/* 2-Column Split: Left Sticky Visual, Right Scrolling Story Steps */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '4rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
+          gap: 'clamp(2rem, 4vw, 4rem)',
           position: 'relative'
         }}>
           

@@ -4,7 +4,7 @@ import { useStudio } from '../context/StudioContext';
 import { LeadEnquiryForm } from '../components/LeadEnquiryForm';
 
 export const ContactPage = () => {
-  const { settings, getWhatsAppUrl } = useStudio();
+  const { settings, getWhatsAppUrl, getMapEmbedUrl } = useStudio();
 
   return (
     <div style={{ paddingTop: 'calc(var(--navbar-height) + 2rem)' }}>
@@ -16,7 +16,7 @@ export const ContactPage = () => {
           <h1 className="editorial-hero-title" style={{ fontSize: 'clamp(2.8rem, 6.5vw, 5.5rem)', marginBottom: '1.5rem' }}>
             Get In Touch <br />
             <span className="editorial-italic" style={{ color: 'var(--accent-gold)' }}>
-              With Om Natraj
+              With {settings.studioName || 'Om Natraj'}
             </span>
           </h1>
           <p style={{
@@ -27,7 +27,7 @@ export const ContactPage = () => {
             lineHeight: 1.5,
             fontWeight: 300
           }}>
-            Ready to find your rhythm? Visit our academy in Indore, message us on WhatsApp, or book your trial batch below.
+            Ready to find your rhythm? Visit our academy{settings.city ? ` in ${settings.city}` : ''}, message us on WhatsApp, or book your trial batch below.
           </p>
         </div>
       </section>
@@ -38,8 +38,8 @@ export const ContactPage = () => {
           
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '4rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+            gap: 'clamp(2rem, 4vw, 4rem)',
             alignItems: 'flex-start'
           }}>
             
@@ -48,66 +48,70 @@ export const ContactPage = () => {
               <div className="glass-panel" style={{ padding: '2.5rem', marginBottom: '2rem' }}>
                 <span className="section-eyebrow">Direct Contact</span>
                 <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: '#fff', marginBottom: '1.5rem' }}>
-                  OM NATRAJ DANCE STUDIO
+                  {settings.studioName || 'OM NATRAJ DANCE STUDIO'}
                 </h3>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                   
                   {/* Phone */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <div style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '4px',
-                      background: 'rgba(212, 175, 55, 0.1)',
-                      border: '1px solid var(--border-gold)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'var(--accent-gold)'
-                    }}>
-                      <Phone size={22} />
+                  {settings.phone && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                      <div style={{
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '4px',
+                        background: 'rgba(212, 175, 55, 0.1)',
+                        border: '1px solid var(--border-gold)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'var(--accent-gold)'
+                      }}>
+                        <Phone size={22} />
+                      </div>
+                      <div>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', letterSpacing: '0.12em', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
+                          Studio Phone
+                        </span>
+                        <a
+                          href={`tel:${settings.phone}`}
+                          style={{ display: 'block', fontSize: '1.15rem', color: '#fff', fontWeight: 600 }}
+                        >
+                          {settings.phone}
+                        </a>
+                      </div>
                     </div>
-                    <div>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', letterSpacing: '0.12em', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
-                        Studio Phone
-                      </span>
-                      <a
-                        href={`tel:${settings.phone || '+919713799075'}`}
-                        style={{ display: 'block', fontSize: '1.15rem', color: '#fff', fontWeight: 600 }}
-                      >
-                        {settings.phone || '+91 9713799075'}
-                      </a>
-                    </div>
-                  </div>
+                  )}
 
                   {/* Email */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <div style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '4px',
-                      background: 'rgba(212, 175, 55, 0.1)',
-                      border: '1px solid var(--border-gold)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'var(--accent-gold)'
-                    }}>
-                      <Mail size={22} />
+                  {settings.email && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                      <div style={{
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '4px',
+                        background: 'rgba(212, 175, 55, 0.1)',
+                        border: '1px solid var(--border-gold)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'var(--accent-gold)'
+                      }}>
+                        <Mail size={22} />
+                      </div>
+                      <div>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', letterSpacing: '0.12em', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
+                          Email Address
+                        </span>
+                        <a
+                          href={`mailto:${settings.email}`}
+                          style={{ display: 'block', fontSize: '1.05rem', color: 'var(--text-main)' }}
+                        >
+                          {settings.email}
+                        </a>
+                      </div>
                     </div>
-                    <div>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', letterSpacing: '0.12em', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
-                        Email Address
-                      </span>
-                      <a
-                        href={`mailto:${settings.email || 'kushanikt667@gmail.com'}`}
-                        style={{ display: 'block', fontSize: '1.05rem', color: 'var(--text-main)' }}
-                      >
-                        {settings.email || 'kushanikt667@gmail.com'}
-                      </a>
-                    </div>
-                  </div>
+                  )}
 
                   {/* Location */}
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
@@ -130,7 +134,7 @@ export const ContactPage = () => {
                         Studio Location
                       </span>
                       <p style={{ fontSize: '1.05rem', color: '#fff', lineHeight: 1.5, margin: 0 }}>
-                        {settings.address || 'Indore, Madhya Pradesh, India'}
+                        {settings.address || 'Studio Academy'}
                       </p>
                     </div>
                   </div>
@@ -174,22 +178,24 @@ export const ContactPage = () => {
                     <MessageSquare size={18} />
                     WhatsApp
                   </a>
-                  <a
-                    href={`tel:${settings.phone || '+919713799075'}`}
-                    className="btn btn-outline"
-                    style={{ flex: 1, padding: '14px' }}
-                  >
-                    <Phone size={18} />
-                    Direct Call
-                  </a>
+                  {settings.phone && (
+                    <a
+                      href={`tel:${settings.phone}`}
+                      className="btn btn-outline"
+                      style={{ flex: 1, padding: '14px' }}
+                    >
+                      <Phone size={18} />
+                      Direct Call
+                    </a>
+                  )}
                 </div>
               </div>
 
-              {/* Indore Map Box */}
+              {/* Dynamic Google Maps Box */}
               <div className="glass-panel" style={{ overflow: 'hidden', borderRadius: '6px', height: '240px', position: 'relative' }}>
                 <iframe
                   title="Studio Location Map"
-                  src="https://maps.google.com/maps?q=Indore,%20Madhya%20Pradesh,%20India&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                  src={getMapEmbedUrl()}
                   width="100%"
                   height="100%"
                   style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg) contrast(1.2)' }}

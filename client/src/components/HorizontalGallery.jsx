@@ -5,11 +5,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export const HorizontalGallery = ({ onImageClick }) => {
+export const HorizontalGallery = ({ items = [], onImageClick }) => {
   const containerRef = useRef(null);
   const scrollTrackRef = useRef(null);
 
-  const galleryItems = [
+  const fallbackItems = [
     {
       id: 1,
       title: 'MOVE.',
@@ -53,6 +53,16 @@ export const HorizontalGallery = ({ onImageClick }) => {
       category: 'Studio Space'
     }
   ];
+
+  const galleryItems = items && items.length > 0
+    ? items.map((item, idx) => ({
+        id: item._id || item.id || idx,
+        title: item.title,
+        subtitle: item.description || item.subtitle || item.category,
+        image: item.imageUrl || item.image,
+        category: item.category
+      }))
+    : fallbackItems;
 
   const scrollLeft = () => {
     if (scrollTrackRef.current) {

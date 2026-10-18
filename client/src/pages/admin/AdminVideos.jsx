@@ -116,7 +116,7 @@ export const AdminVideos = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '2.5rem' }}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 800, color: '#fff', marginBottom: '4px' }}>
             Dance Moments & Video Archives
@@ -134,7 +134,7 @@ export const AdminVideos = () => {
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
         gap: '2rem'
       }}>
         {videos.map((vid) => (
@@ -226,7 +226,7 @@ export const AdminVideos = () => {
           <div className="glass-panel" style={{
             maxWidth: '560px',
             width: '100%',
-            padding: '2.5rem',
+            padding: 'clamp(1.25rem, 4vw, 2.5rem)',
             background: '#121218',
             border: '1px solid var(--border-gold)',
             borderRadius: '8px',
@@ -309,7 +309,7 @@ export const AdminVideos = () => {
                   required
                   value={newVideo.title}
                   onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
-                  placeholder="e.g. Indore Garba Highlights 2026"
+                  placeholder="e.g. Navratri Garba Highlights 2026"
                   className="form-input"
                 />
               </div>

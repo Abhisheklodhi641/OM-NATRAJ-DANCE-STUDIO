@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useStudio } from '../context/StudioContext';
 
 export const Preloader = () => {
+  const { settings } = useStudio();
   const [fading, setFading] = useState(false);
   const [removed, setRemoved] = useState(false);
 
@@ -46,7 +48,7 @@ export const Preloader = () => {
           color: '#f7f4ee',
           marginBottom: '6px'
         }}>
-          OM NATRAJ
+          {settings.studioName || 'OM NATRAJ'}
         </h1>
         
         <p style={{
@@ -57,7 +59,7 @@ export const Preloader = () => {
           color: 'var(--accent-gold)',
           marginBottom: '28px'
         }}>
-          DANCE STUDIO • INDORE
+          DANCE STUDIO • {(settings.city || 'ACADEMY').toUpperCase()}
         </p>
 
         {/* Minimal Animated Line / Movement Indicator */}

@@ -9,7 +9,7 @@ export const DanceMomentsVideo = ({ videos = [], onPlayVideo }) => {
         {
           _id: '1',
           title: 'OM NATRAJ DANCE STUDIO - Studio Reel 2026',
-          description: 'A cinematic montage capturing our contemporary, Bollywood, and Garba choreography in Indore.',
+          description: 'A cinematic montage capturing our contemporary, Bollywood, and Garba choreography.',
           videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
           posterUrl: '/images/hero-dance.jpg',
           duration: '01:45',
@@ -17,7 +17,7 @@ export const DanceMomentsVideo = ({ videos = [], onPlayVideo }) => {
         },
         {
           _id: '2',
-          title: 'Indore Navratri Garba Highlights',
+          title: 'Grand Navratri Garba Highlights',
           description: 'Live performance of our senior Garba troupe performing authentic Gujarati steps.',
           videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
           posterUrl: '/images/garba-dance.jpg',
@@ -27,7 +27,7 @@ export const DanceMomentsVideo = ({ videos = [], onPlayVideo }) => {
         {
           _id: '3',
           title: 'Royal Wedding Sangeet Choreography',
-          description: 'Romantic couple choreography and energetic family flashmob staged in Indore.',
+          description: 'Romantic couple choreography and energetic family flashmob staged with grace.',
           videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
           posterUrl: '/images/wedding-dance.jpg',
           duration: '01:50',
@@ -61,7 +61,7 @@ export const DanceMomentsVideo = ({ videos = [], onPlayVideo }) => {
         </div>
 
         {/* Featured Video + Grid Layout */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '2.5rem', alignItems: 'stretch' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: 'clamp(1.5rem, 3vw, 2.5rem)', alignItems: 'stretch' }}>
           
           {/* Main Hero Video Card */}
           <div

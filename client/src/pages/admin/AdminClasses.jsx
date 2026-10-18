@@ -121,7 +121,7 @@ export const AdminClasses = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '2.5rem' }}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 800, color: '#fff', marginBottom: '4px' }}>
             Dance Classes Curriculum
@@ -139,7 +139,8 @@ export const AdminClasses = () => {
 
       {/* Classes Table */}
       <div className="admin-card" style={{ padding: 0, overflow: 'hidden' }}>
-        <table className="admin-table">
+        <div className="admin-table-container" style={{ margin: 0 }}>
+          <table className="admin-table">
           <thead>
             <tr>
               <th>Preview</th>
@@ -197,7 +198,8 @@ export const AdminClasses = () => {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
 
       {/* Add / Edit Modal */}
@@ -206,7 +208,7 @@ export const AdminClasses = () => {
           <div className="glass-panel" style={{
             maxWidth: '640px',
             width: '100%',
-            padding: '2.5rem',
+            padding: 'clamp(1.25rem, 4vw, 2.5rem)',
             background: '#121218',
             border: '1px solid var(--border-gold)',
             borderRadius: '8px',
@@ -238,7 +240,7 @@ export const AdminClasses = () => {
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
                 <div className="form-group">
                   <label className="form-label">Dance Style *</label>
                   <input
@@ -263,7 +265,7 @@ export const AdminClasses = () => {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
                 <div className="form-group">
                   <label className="form-label">Age Group</label>
                   <input

@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import { StorageService } from '../services/storageService.js';
 import { protectAdmin } from '../middleware/authMiddleware.js';
 
@@ -19,7 +20,11 @@ router.get('/', async (req, res) => {
 // GET /api/classes/:id
 router.get('/:id', async (req, res) => {
   try {
-    const danceClass = await StorageService.findById('classes', req.params.id);
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid class ID format' });
+    }
+    const danceClass = await StorageService.findById('classes', id);
     if (!danceClass) return res.status(404).json({ success: false, message: 'Class not found' });
     res.json({ success: true, class: danceClass });
   } catch (error) {
@@ -56,7 +61,11 @@ router.post('/', protectAdmin, async (req, res) => {
 // PUT /api/classes/:id - Admin
 router.put('/:id', protectAdmin, async (req, res) => {
   try {
-    const updated = await StorageService.findByIdAndUpdate('classes', req.params.id, req.body);
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid class ID format' });
+    }
+    const updated = await StorageService.findByIdAndUpdate('classes', id, req.body);
     if (!updated) return res.status(404).json({ success: false, message: 'Class not found' });
     res.json({ success: true, message: 'Class updated successfully', class: updated });
   } catch (error) {
@@ -67,7 +76,11 @@ router.put('/:id', protectAdmin, async (req, res) => {
 // DELETE /api/classes/:id - Admin
 router.delete('/:id', protectAdmin, async (req, res) => {
   try {
-    const deleted = await StorageService.findByIdAndDelete('classes', req.params.id);
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid class ID format' });
+    }
+    const deleted = await StorageService.findByIdAndDelete('classes', id);
     if (!deleted) return res.status(404).json({ success: false, message: 'Class not found' });
     res.json({ success: true, message: 'Class deleted successfully' });
   } catch (error) {

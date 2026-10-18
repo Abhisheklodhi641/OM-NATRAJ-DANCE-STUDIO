@@ -1,7 +1,7 @@
 # OM NATRAJ DANCE STUDIO
 
 > **"Where Movement Becomes Expression."**  
-> *Premier Dance Academy based in Indore, Madhya Pradesh, India.*
+> *Premier Dance Academy based in Banmore, Morena, Madhya Pradesh, India.*
 
 A cinematic, modern, high-performance web platform designed for **OM NATRAJ DANCE STUDIO**. Built with React, GSAP, Node.js, Express, MongoDB, and direct media upload architecture.
 
@@ -127,7 +127,7 @@ npm run dev
 ## 📞 Studio Contact Information
 
 - **Studio Name**: OM NATRAJ DANCE STUDIO
-- **Location**: Indore, Madhya Pradesh, India
+- **Location**: Banmore, Morena, Madhya Pradesh, India
 - **Phone**: +91 9713799075
 - **WhatsApp**: +91 9713799075
 - **Email**: kushanikt667@gmail.com

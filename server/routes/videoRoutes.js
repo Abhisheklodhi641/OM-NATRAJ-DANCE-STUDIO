@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import { StorageService } from '../services/storageService.js';
 import { protectAdmin } from '../middleware/authMiddleware.js';
 
@@ -15,6 +16,21 @@ router.get('/', async (req, res) => {
     res.json({ success: true, count: videos.length, videos });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to fetch videos' });
+  }
+});
+
+// GET /api/videos/:id - Public
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid video ID format' });
+    }
+    const video = await StorageService.findById('videos', id);
+    if (!video) return res.status(404).json({ success: false, message: 'Video not found' });
+    res.json({ success: true, video });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error fetching video' });
   }
 });
 
@@ -45,7 +61,11 @@ router.post('/', protectAdmin, async (req, res) => {
 // PUT /api/videos/:id - Admin
 router.put('/:id', protectAdmin, async (req, res) => {
   try {
-    const updated = await StorageService.findByIdAndUpdate('videos', req.params.id, req.body);
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid video ID format' });
+    }
+    const updated = await StorageService.findByIdAndUpdate('videos', id, req.body);
     if (!updated) return res.status(404).json({ success: false, message: 'Video not found' });
     res.json({ success: true, message: 'Video updated', video: updated });
   } catch (error) {
@@ -56,7 +76,11 @@ router.put('/:id', protectAdmin, async (req, res) => {
 // DELETE /api/videos/:id - Admin
 router.delete('/:id', protectAdmin, async (req, res) => {
   try {
-    const deleted = await StorageService.findByIdAndDelete('videos', req.params.id);
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid video ID format' });
+    }
+    const deleted = await StorageService.findByIdAndDelete('videos', id);
     if (!deleted) return res.status(404).json({ success: false, message: 'Video not found' });
     res.json({ success: true, message: 'Video deleted' });
   } catch (error) {

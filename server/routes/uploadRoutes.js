@@ -1,5 +1,5 @@
 import express from 'express';
-import { upload, processUploadedFile } from '../middleware/uploadMiddleware.js';
+import { upload, processUploadedFile, deleteUploadedFile } from '../middleware/uploadMiddleware.js';
 import { protectAdmin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -45,6 +45,19 @@ router.post('/multiple', protectAdmin, upload.array('files', 10), async (req, re
   } catch (error) {
     console.error('Multiple upload error:', error);
     res.status(500).json({ success: false, message: error.message || 'Upload failed' });
+  }
+});
+
+// DELETE /api/upload/:publicId - Delete image/video from Cloudinary or local storage
+router.delete('/:publicId(*)', protectAdmin, async (req, res) => {
+  try {
+    const { publicId } = req.params;
+    const resourceType = req.query.type || 'image';
+    await deleteUploadedFile(publicId, resourceType);
+    res.json({ success: true, message: 'File deleted successfully' });
+  } catch (error) {
+    console.error('Delete upload error:', error);
+    res.status(500).json({ success: false, message: 'Failed to delete file' });
   }
 });
 

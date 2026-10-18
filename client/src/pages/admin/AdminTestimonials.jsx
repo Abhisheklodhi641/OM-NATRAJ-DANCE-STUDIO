@@ -91,7 +91,7 @@ export const AdminTestimonials = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '2.5rem' }}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 800, color: '#fff', marginBottom: '4px' }}>
             Performer Testimonials
@@ -108,7 +108,8 @@ export const AdminTestimonials = () => {
       </div>
 
       <div className="admin-card" style={{ padding: 0, overflow: 'hidden' }}>
-        <table className="admin-table">
+        <div className="admin-table-container" style={{ margin: 0 }}>
+          <table className="admin-table">
           <thead>
             <tr>
               <th>Student Name</th>
@@ -166,7 +167,8 @@ export const AdminTestimonials = () => {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
 
       {modalOpen && (
@@ -174,10 +176,12 @@ export const AdminTestimonials = () => {
           <div className="glass-panel" style={{
             maxWidth: '540px',
             width: '100%',
-            padding: '2.5rem',
+            padding: 'clamp(1.25rem, 4vw, 2.5rem)',
             background: '#121218',
             border: '1px solid var(--border-gold)',
-            borderRadius: '8px'
+            borderRadius: '8px',
+            maxHeight: '90vh',
+            overflowY: 'auto'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
               <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: '#fff' }}>
@@ -204,7 +208,7 @@ export const AdminTestimonials = () => {
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
                 <div className="form-group">
                   <label className="form-label">Role / Batch *</label>
                   <input

@@ -24,23 +24,23 @@ const SettingsSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    default: '+91 9713799075'
+    default: () => process.env.STUDIO_PHONE || '+91 9713799075'
   },
   whatsappNumber: {
     type: String,
-    default: '919713799075'
+    default: () => process.env.STUDIO_WHATSAPP || '919713799075'
   },
   email: {
     type: String,
-    default: 'kushanikt667@gmail.com'
+    default: () => process.env.STUDIO_EMAIL || 'kushanikt667@gmail.com'
   },
   address: {
     type: String,
-    default: 'Indore, Madhya Pradesh, India'
+    default: () => process.env.STUDIO_LOCATION || 'Banmore, Morena, Madhya Pradesh, India'
   },
   city: {
     type: String,
-    default: 'Indore'
+    default: 'Banmore, Morena'
   },
   state: {
     type: String,
@@ -49,6 +49,22 @@ const SettingsSchema = new mongoose.Schema({
   country: {
     type: String,
     default: 'India'
+  },
+  pincode: {
+    type: String,
+    default: ''
+  },
+  googleMapsUrl: {
+    type: String,
+    default: ''
+  },
+  latitude: {
+    type: Number,
+    default: null
+  },
+  longitude: {
+    type: Number,
+    default: null
   },
   youtubeUrl: {
     type: String,
@@ -62,6 +78,22 @@ const SettingsSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  heroMedia: {
+    type: String,
+    default: '/images/hero-dance.jpg'
+  },
+  aboutImage: {
+    type: String,
+    default: '/images/masterclass-action.jpg'
+  },
+  cinematicVideo: {
+    type: String,
+    default: ''
+  },
+  ctaImage: {
+    type: String,
+    default: '/images/workshop-banner.jpg'
+  },
   introHeading: {
     type: String,
     default: "Dance is not just about learning steps.\nIt's about finding your own rhythm."
@@ -73,7 +105,7 @@ const SettingsSchema = new mongoose.Schema({
   statistics: {
     type: [StatisticItemSchema],
     default: [
-      { id: 'experience', label: 'Years of Experience', value: 12, prefix: '', suffix: '+', description: 'Nurturing dance excellence in Indore' },
+      { id: 'experience', label: 'Years of Experience', value: 12, prefix: '', suffix: '+', description: 'Nurturing dance excellence' },
       { id: 'students', label: 'Students Trained', value: 2500, prefix: '', suffix: '+', description: 'Across all age groups and skill levels' },
       { id: 'styles', label: 'Dance Styles', value: 8, prefix: '', suffix: '+', description: 'Bollywood, Garba, Hip-Hop, Contemporary & more' },
       { id: 'events', label: 'Events & Workshops', value: 150, prefix: '', suffix: '+', description: 'Annual concerts, sangeet & cultural fests' }
@@ -81,7 +113,7 @@ const SettingsSchema = new mongoose.Schema({
   },
   footerText: {
     type: String,
-    default: 'A premier dance academy fostering rhythm, confidence, and artistic performance in Indore, Madhya Pradesh.'
+    default: 'A premier dance academy fostering rhythm, confidence, and artistic performance.'
   }
 }, {
   timestamps: true

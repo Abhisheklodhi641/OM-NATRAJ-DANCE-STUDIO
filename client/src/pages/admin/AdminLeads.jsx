@@ -119,15 +119,15 @@ export const AdminLeads = () => {
         </div>
 
         {/* Search Input */}
-        <form onSubmit={handleSearchSubmit} style={{ display: 'flex', gap: '8px' }}>
-          <div style={{ position: 'relative' }}>
+        <form onSubmit={handleSearchSubmit} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', width: '100%', maxWidth: '340px' }}>
+          <div style={{ position: 'relative', flex: 1, minWidth: '180px' }}>
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search name, phone, email..."
               className="admin-search-input"
-              style={{ paddingLeft: '36px', width: '260px' }}
+              style={{ paddingLeft: '36px', width: '100%' }}
             />
             <Search size={16} color="var(--text-dim)" style={{ position: 'absolute', left: '12px', top: '12px' }} />
           </div>
@@ -139,7 +139,7 @@ export const AdminLeads = () => {
       </div>
 
       {/* Main Table + Detail Drawer Split */}
-      <div style={{ display: 'grid', gridTemplateColumns: selectedLead ? '1fr 380px' : '1fr', gap: '1.5rem', alignItems: 'flex-start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: selectedLead ? 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))' : '1fr', gap: '1.5rem', alignItems: 'flex-start' }}>
         
         {/* Leads Table */}
         <div className="admin-card" style={{ padding: '0', overflow: 'hidden' }}>
@@ -152,7 +152,7 @@ export const AdminLeads = () => {
               No leads found matching current filter.
             </div>
           ) : (
-            <div style={{ overflowX: 'auto' }}>
+            <div className="admin-table-container" style={{ margin: 0 }}>
               <table className="admin-table">
                 <thead>
                   <tr>

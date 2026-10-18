@@ -87,7 +87,7 @@ export const IntroStatement = () => {
           margin: '0 auto',
           lineHeight: 1.7
         }}>
-          {settings.introSubtext || 'Rooted in the timeless grace of Indian rhythm and propelled by cutting-edge contemporary choreography. We mold aspiring dancers into stage-ready performers right here in Indore.'}
+          {settings.introSubtext || `Rooted in the timeless grace of Indian rhythm and propelled by cutting-edge contemporary choreography. We mold aspiring dancers into stage-ready performers${settings.city ? ` right here in ${settings.city}` : ''}.`}
         </p>
 
         {/* Decorative Divider */}

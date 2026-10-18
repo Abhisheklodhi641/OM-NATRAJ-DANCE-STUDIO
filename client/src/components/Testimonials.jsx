@@ -10,7 +10,7 @@ export const Testimonials = ({ testimonials = [] }) => {
         {
           _id: '1',
           name: 'Pooja Verma',
-          role: 'Garba Workshop Participant, Indore',
+          role: 'Garba Workshop Participant',
           testimonial: 'Om Natraj Dance Studio transformed my confidence completely. The instructors teach with so much patience and passion. Their Garba workshop prepared me to dance non-stop with real style!',
           rating: 5
         },
@@ -18,14 +18,14 @@ export const Testimonials = ({ testimonials = [] }) => {
           _id: '2',
           name: 'Rohit & Shreya Sharma',
           role: 'Wedding Sangeet Clients',
-          testimonial: 'Neither my husband nor I had ever danced on stage before. The team choreographed a magical, graceful routine for our sangeet in Indore that had everyone on their feet cheering.',
+          testimonial: 'Neither my husband nor I had ever danced on stage before. The team choreographed a magical, graceful routine for our sangeet that had everyone on their feet cheering.',
           rating: 5
         },
         {
           _id: '3',
           name: 'Ananya Mehta',
           role: 'Contemporary Student (2 Years)',
-          testimonial: 'The studio vibe is unlike anywhere else in Indore. High energy, artistic integrity, and true technique. It has become my second home.',
+          testimonial: 'The studio vibe is unlike anywhere else. High energy, artistic integrity, and true technique. It has become my second home.',
           rating: 5
         }
       ];

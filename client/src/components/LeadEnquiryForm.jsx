@@ -4,7 +4,7 @@ import { api } from '../services/api';
 import { useStudio } from '../context/StudioContext';
 
 export const LeadEnquiryForm = ({ defaultStyle = 'General Dance Training' }) => {
-  const { getWhatsAppUrl } = useStudio();
+  const { getWhatsAppUrl, settings } = useStudio();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -47,7 +47,7 @@ export const LeadEnquiryForm = ({ defaultStyle = 'General Dance Training' }) => 
     }
   };
 
-  const whatsappFollowUpText = `Hi Om Natraj Dance Studio! I just submitted an enquiry on your website.\n\n• Name: ${formData.name}\n• Phone: ${formData.phone}\n• Interested In: ${formData.interestedIn}\n• Preferred Batch: ${formData.preferredClass}\n\nLooking forward to speaking with you!`;
+  const whatsappFollowUpText = `Hi ${settings.studioName || 'Om Natraj Dance Studio'}! I just submitted an enquiry on your website.\n\n• Name: ${formData.name}\n• Phone: ${formData.phone}\n• Interested In: ${formData.interestedIn}\n• Preferred Batch: ${formData.preferredClass}\n\nLooking forward to speaking with you!`;
 
   return (
     <div className="glass-panel" style={{
@@ -169,7 +169,7 @@ export const LeadEnquiryForm = ({ defaultStyle = 'General Dance Training' }) => 
             </div>
           )}
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '1.25rem' }}>
             
             <div className="form-group">
               <label className="form-label" htmlFor="lead-name">Your Full Name *</label>
@@ -201,7 +201,7 @@ export const LeadEnquiryForm = ({ defaultStyle = 'General Dance Training' }) => 
 
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '1.25rem' }}>
             
             <div className="form-group">
               <label className="form-label" htmlFor="lead-email">Email Address</label>
@@ -291,7 +291,7 @@ export const LeadEnquiryForm = ({ defaultStyle = 'General Dance Training' }) => 
             marginTop: '1.25rem',
             letterSpacing: '0.05em'
           }}>
-            🔒 No spam. Your phone number is only used to connect regarding studio batches in Indore.
+            🔒 No spam. Your phone number is only used to connect regarding studio batches{settings.city ? ` in ${settings.city}` : ''}.
           </p>
 
         </form>

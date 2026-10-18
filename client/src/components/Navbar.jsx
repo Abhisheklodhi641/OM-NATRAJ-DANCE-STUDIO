@@ -22,10 +22,22 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu on route change
+  // Close mobile menu on route change & unlock scroll
   useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname]);
+
+  // Lock body scroll when mobile drawer is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileOpen]);
 
   const navLinks = [
     { label: 'Home', path: '/' },
@@ -82,7 +94,7 @@ export const Navbar = () => {
                 textTransform: 'uppercase',
                 display: 'block'
               }}>
-                DANCE STUDIO • INDORE
+                DANCE STUDIO • {(settings.city || 'ACADEMY').toUpperCase()}
               </span>
             </div>
           </Link>
@@ -134,13 +146,16 @@ export const Navbar = () => {
               border: 'none',
               color: 'var(--text-main)',
               cursor: 'pointer',
+              minWidth: '44px',
+              minHeight: '44px',
               padding: '8px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              borderRadius: '4px'
             }}
             className="mobile-toggle"
-            aria-label="Toggle navigation menu"
+            aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
           >
             {mobileOpen ? <X size={28} color="var(--accent-gold)" /> : <Menu size={28} />}
           </button>
@@ -149,24 +164,36 @@ export const Navbar = () => {
 
       {/* Fullscreen Mobile Drawer */}
       <div className={`mobile-nav-overlay ${mobileOpen ? 'is-open' : ''}`}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
           <div>
             <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)' }}>
-              OM NATRAJ
+              {settings.studioName || 'OM NATRAJ'}
             </div>
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', letterSpacing: '0.2em', color: 'var(--accent-gold)' }}>
-              INDORE ACADEMY
+              {(settings.city || 'BANMORE').toUpperCase()} ACADEMY
             </div>
           </div>
           <button
             onClick={() => setMobileOpen(false)}
-            style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#fff',
+              cursor: 'pointer',
+              minWidth: '44px',
+              minHeight: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '8px'
+            }}
+            aria-label="Close navigation menu"
           >
-            <X size={32} />
+            <X size={28} color="var(--accent-gold)" />
           </button>
         </div>
 
-        <nav style={{ display: 'flex', flexDirection: 'column' }}>
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           {navLinks.map((item, idx) => (
             <Link
               key={item.path}
@@ -193,14 +220,16 @@ export const Navbar = () => {
             <MessageSquare size={18} />
             Chat on WhatsApp
           </a>
-          <a
-            href={`tel:${settings.phone || '+919713799075'}`}
-            className="btn btn-outline"
-            style={{ width: '100%' }}
-          >
-            <Phone size={18} />
-            Call: {settings.phone || '+91 9713799075'}
-          </a>
+          {settings.phone && (
+            <a
+              href={`tel:${settings.phone}`}
+              className="btn btn-outline"
+              style={{ width: '100%' }}
+            >
+              <Phone size={18} />
+              Call: {settings.phone}
+            </a>
+          )}
         </div>
       </div>
 

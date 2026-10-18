@@ -1,4 +1,5 @@
-const API_BASE = '/api';
+const rawBase = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const API_BASE = 'https://om-natraj-dance-studio-backend.onrender.com/api';
 
 export const getAuthToken = () => localStorage.getItem('om_natraj_admin_token');
 export const setAuthToken = (token) => localStorage.setItem('om_natraj_admin_token', token);
@@ -33,13 +34,24 @@ const request = async (endpoint, options = {}) => {
 };
 
 export const api = {
+  // Health Check
+  checkHealth: () => request('/health'),
+
   // Public
   getSettings: () => request('/settings'),
   getClasses: (status = 'active') => request(`/classes${status ? `?status=${status}` : ''}`),
   getEvents: (status) => request(`/events${status ? `?status=${status}` : ''}`),
-  getGallery: (category) => request(`/gallery${category ? `?category=${category}` : ''}`),
+  getGallery: (param) => {
+    if (!param) return request('/gallery');
+    if (typeof param === 'string' && param.startsWith('?')) return request(`/gallery${param}`);
+    return request(`/gallery?category=${param}`);
+  },
   getVideos: () => request('/videos'),
-  getProducts: (category) => request(`/products${category ? `?category=${category}` : ''}`),
+  getProducts: (param) => {
+    if (!param) return request('/products');
+    if (typeof param === 'string' && param.startsWith('?')) return request(`/products${param}`);
+    return request(`/products?category=${param}`);
+  },
   getTestimonials: () => request('/testimonials'),
   submitLead: (leadData) => request('/leads', { method: 'POST', body: JSON.stringify(leadData) }),
 

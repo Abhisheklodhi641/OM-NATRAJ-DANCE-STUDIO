@@ -46,14 +46,18 @@ export const Hero = () => {
         '-=0.4'
       );
 
-      // 2. Cinematic Scroll Parallax
+      // 2. Cinematic Scroll Parallax (Responsive distance)
+      const isMobile = window.innerWidth < 768;
+      const bgYDistance = isMobile ? 45 : 140;
+      const contentYDistance = isMobile ? -30 : -70;
+
       if (bgImageRef.current && heroRef.current) {
         gsap.fromTo(
           bgImageRef.current,
-          { scale: 1.15, y: 0 },
+          { scale: isMobile ? 1.08 : 1.15, y: 0 },
           {
             scale: 1.0,
-            y: 140,
+            y: bgYDistance,
             ease: 'none',
             scrollTrigger: {
               trigger: heroRef.current,
@@ -67,7 +71,7 @@ export const Hero = () => {
 
       if (contentRef.current && heroRef.current) {
         gsap.to(contentRef.current, {
-          y: -70,
+          y: contentYDistance,
           opacity: 0.2,
           ease: 'none',
           scrollTrigger: {
@@ -102,6 +106,7 @@ export const Hero = () => {
       style={{
         position: 'relative',
         minHeight: '100vh',
+        minHeight: '100dvh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -121,13 +126,13 @@ export const Hero = () => {
       >
         <img
           ref={bgImageRef}
-          src="/images/hero-dance.jpg"
+          src={settings?.heroMedia || "/images/hero-dance.jpg"}
           alt="Om Natraj Dance Studio Hero Performer"
           style={{
             width: '100%',
             height: '115%',
             objectFit: 'cover',
-            objectPosition: 'center 25%',
+            objectPosition: 'center 20%',
             transformOrigin: 'center center',
           }}
         />
@@ -147,8 +152,8 @@ export const Hero = () => {
         <div
           className="spotlight-glow spotlight-gold animate-pulse-glow"
           style={{
-            width: '650px',
-            height: '650px',
+            width: 'clamp(300px, 50vw, 650px)',
+            height: 'clamp(300px, 50vw, 650px)',
             top: '20%',
             left: '50%',
             transform: 'translateX(-50%)',
@@ -165,28 +170,31 @@ export const Hero = () => {
           zIndex: 2,
           textAlign: 'center',
           maxWidth: '1050px',
-          paddingTop: '3rem',
-          paddingBottom: '5rem',
+          paddingTop: 'clamp(1.5rem, 5vw, 3rem)',
+          paddingBottom: 'clamp(3rem, 8vw, 5rem)',
         }}
       >
         {/* Eyebrow */}
-        <div className="hero-eyebrow" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem' }}>
+        <div className="hero-eyebrow" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', marginBottom: '1.25rem' }}>
           <span style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.82rem',
-            letterSpacing: '0.28em',
+            fontSize: 'clamp(0.68rem, 2vw, 0.82rem)',
+            letterSpacing: 'clamp(0.12em, 0.4vw, 0.28em)',
             textTransform: 'uppercase',
             color: 'var(--accent-gold)',
             background: 'rgba(212, 175, 55, 0.1)',
             border: '1px solid var(--border-gold)',
-            padding: '6px 16px',
+            padding: '6px clamp(10px, 3vw, 16px)',
             borderRadius: '20px',
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '8px'
+            gap: '8px',
+            textAlign: 'center',
+            maxWidth: '100%',
+            lineHeight: 1.4
           }}>
-            <Sparkles size={14} color="var(--accent-gold)" />
-            INDORE'S PREMIER DANCE ACADEMY
+            <Sparkles size={14} color="var(--accent-gold)" style={{ flexShrink: 0 }} />
+            {(settings.city ? `${settings.city}'S PREMIER DANCE ACADEMY` : 'PREMIER DANCE ACADEMY').toUpperCase()}
           </span>
         </div>
 
@@ -197,9 +205,9 @@ export const Hero = () => {
             fontFamily: 'var(--font-serif)',
             fontWeight: 400,
             fontStyle: 'italic',
-            fontSize: 'clamp(2.4rem, 6.2vw, 5.5rem)',
+            fontSize: 'clamp(2.1rem, 6.2vw, 5.5rem)',
             color: 'var(--accent-gold)',
-            marginTop: '-0.1em'
+            marginTop: '-0.05em'
           }}>
             DANCE STUDIO
           </div>
@@ -208,7 +216,7 @@ export const Hero = () => {
         {/* Tagline */}
         <p className="hero-subtext" style={{
           fontFamily: 'var(--font-serif)',
-          fontSize: 'clamp(1.25rem, 2.8vw, 2.1rem)',
+          fontSize: 'clamp(1.15rem, 2.8vw, 2.1rem)',
           fontWeight: 300,
           color: 'var(--text-main)',
           lineHeight: 1.35,
@@ -221,11 +229,11 @@ export const Hero = () => {
         {/* Secondary Text */}
         <p className="hero-subtext" style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: '0.88rem',
-          letterSpacing: '0.24em',
+          fontSize: 'clamp(0.72rem, 1.8vw, 0.88rem)',
+          letterSpacing: 'clamp(0.12em, 0.4vw, 0.24em)',
           textTransform: 'uppercase',
           color: 'var(--text-muted)',
-          marginBottom: '2.5rem'
+          marginBottom: 'clamp(1.5rem, 4vw, 2.5rem)'
         }}>
           {settings.secondaryText || 'Learn. Move. Perform. Create.'}
         </p>
@@ -236,11 +244,11 @@ export const Hero = () => {
           flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '18px'
+          gap: 'clamp(10px, 2.5vw, 18px)'
         }}>
           <Link
             to="/classes"
-            className="btn btn-primary"
+            className="btn btn-primary hero-btn"
             data-cursor="CLASSES"
           >
             Explore Classes
@@ -251,7 +259,7 @@ export const Hero = () => {
             href={getWhatsAppUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-whatsapp"
+            className="btn btn-whatsapp hero-btn"
             data-cursor="WHATSAPP"
           >
             <MessageSquare size={18} />
@@ -260,7 +268,7 @@ export const Hero = () => {
 
           <Link
             to="/contact"
-            className="btn btn-outline"
+            className="btn btn-outline hero-btn"
             data-cursor="JOIN"
           >
             Book Free Trial Batch

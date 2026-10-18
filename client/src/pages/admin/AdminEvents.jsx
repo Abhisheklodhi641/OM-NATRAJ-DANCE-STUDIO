@@ -13,7 +13,7 @@ export const AdminEvents = () => {
     name: '',
     date: 'OCT 24 - 28, 2026',
     time: '6:30 PM - 9:00 PM',
-    location: 'Om Natraj Dance Studio, Main Arena, Indore',
+    location: 'Om Natraj Dance Studio, Main Arena',
     description: '',
     image: '/images/garba-dance.jpg',
     badge: 'Workshop',
@@ -43,7 +43,7 @@ export const AdminEvents = () => {
       name: '',
       date: 'OCT 24 - 28, 2026',
       time: '6:30 PM - 9:00 PM',
-      location: 'Om Natraj Dance Studio, Main Arena, Indore',
+      location: 'Om Natraj Dance Studio, Main Arena',
       description: '',
       image: '/images/garba-dance.jpg',
       badge: 'Workshop',
@@ -118,7 +118,7 @@ export const AdminEvents = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '2.5rem' }}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 800, color: '#fff', marginBottom: '4px' }}>
             Events & Workshops
@@ -135,7 +135,8 @@ export const AdminEvents = () => {
       </div>
 
       <div className="admin-card" style={{ padding: 0, overflow: 'hidden' }}>
-        <table className="admin-table">
+        <div className="admin-table-container" style={{ margin: 0 }}>
+          <table className="admin-table">
           <thead>
             <tr>
               <th>Preview</th>
@@ -193,7 +194,8 @@ export const AdminEvents = () => {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
 
       {modalOpen && (
@@ -201,7 +203,7 @@ export const AdminEvents = () => {
           <div className="glass-panel" style={{
             maxWidth: '640px',
             width: '100%',
-            padding: '2.5rem',
+            padding: 'clamp(1.25rem, 4vw, 2.5rem)',
             background: '#121218',
             border: '1px solid var(--border-gold)',
             borderRadius: '8px',
@@ -233,7 +235,7 @@ export const AdminEvents = () => {
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
                 <div className="form-group">
                   <label className="form-label">Date *</label>
                   <input
@@ -258,14 +260,14 @@ export const AdminEvents = () => {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
                 <div className="form-group">
                   <label className="form-label">Location / Venue</label>
                   <input
                     type="text"
                     value={formData.location}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                    placeholder="e.g. Om Natraj Dance Studio, Indore"
+                    placeholder="e.g. Om Natraj Main Studio Arena"
                     className="form-input"
                   />
                 </div>

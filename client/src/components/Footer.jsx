@@ -21,8 +21,8 @@ export const Footer = () => {
       <div className="site-container">
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: '3.5rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))',
+          gap: 'clamp(2rem, 4vw, 3.5rem)',
           marginBottom: '4.5rem',
           position: 'relative',
           zIndex: 1
@@ -75,7 +75,7 @@ export const Footer = () => {
               lineHeight: 1.6,
               marginBottom: '1.75rem'
             }}>
-              {settings.footerText || 'A premier dance academy fostering rhythm, confidence, and artistic performance in Indore, Madhya Pradesh.'}
+              {settings.footerText || 'A premier dance academy fostering rhythm, confidence, and artistic performance.'}
             </p>
 
             {/* Social Icons */}
@@ -240,29 +240,33 @@ export const Footer = () => {
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                 <MapPin size={20} color="var(--accent-gold)" style={{ flexShrink: 0, marginTop: '2px' }} />
                 <span style={{ fontSize: '0.92rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                  {settings.address || 'Indore, Madhya Pradesh, India'}
+                  {settings.address || 'Studio Academy'}
                 </span>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <Phone size={18} color="var(--accent-gold)" style={{ flexShrink: 0 }} />
-                <a
-                  href={`tel:${settings.phone || '+919713799075'}`}
-                  style={{ fontSize: '0.92rem', color: 'var(--text-main)', fontWeight: 500 }}
-                >
-                  {settings.phone || '+91 9713799075'}
-                </a>
-              </div>
+              {settings.phone && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Phone size={18} color="var(--accent-gold)" style={{ flexShrink: 0 }} />
+                  <a
+                    href={`tel:${settings.phone}`}
+                    style={{ fontSize: '0.92rem', color: 'var(--text-main)', fontWeight: 500 }}
+                  >
+                    {settings.phone}
+                  </a>
+                </div>
+              )}
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <Mail size={18} color="var(--accent-gold)" style={{ flexShrink: 0 }} />
-                <a
-                  href={`mailto:${settings.email || 'kushanikt667@gmail.com'}`}
-                  style={{ fontSize: '0.92rem', color: 'var(--text-muted)' }}
-                >
-                  {settings.email || 'kushanikt667@gmail.com'}
-                </a>
-              </div>
+              {settings.email && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Mail size={18} color="var(--accent-gold)" style={{ flexShrink: 0 }} />
+                  <a
+                    href={`mailto:${settings.email}`}
+                    style={{ fontSize: '0.92rem', color: 'var(--text-muted)' }}
+                  >
+                    {settings.email}
+                  </a>
+                </div>
+              )}
             </div>
 
             <div style={{ marginTop: '1.75rem' }}>
@@ -272,7 +276,7 @@ export const Footer = () => {
                 style={{ padding: '10px 18px', fontSize: '0.78rem', width: '100%' }}
                 data-cursor="MAP"
               >
-                Visit Studio In Indore
+                Visit Studio{settings.city ? ` In ${settings.city}` : ''}
                 <ArrowUpRight size={14} />
               </Link>
             </div>
@@ -295,7 +299,7 @@ export const Footer = () => {
             letterSpacing: '0.08em',
             color: 'var(--text-dim)'
           }}>
-            © {new Date().getFullYear()} OM NATRAJ DANCE STUDIO • INDORE. ALL RIGHTS RESERVED.
+            © {new Date().getFullYear()} {settings.studioName || 'OM NATRAJ DANCE STUDIO'}{settings.city ? ` • ${settings.city.toUpperCase()}` : ''}. ALL RIGHTS RESERVED.
           </p>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -304,7 +308,7 @@ export const Footer = () => {
               fontSize: '0.75rem',
               color: 'var(--text-dim)'
             }}>
-              Indore, Madhya Pradesh
+              {settings.city ? `${settings.city}, ${settings.state || ''}` : ''}
             </span>
 
             <Link

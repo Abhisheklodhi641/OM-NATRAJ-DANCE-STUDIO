@@ -11,7 +11,7 @@ export const WhyOmNatraj = () => {
     {
       icon: Users,
       title: 'Personal Attention',
-      desc: 'Small student-to-teacher batches in Indore ensuring every dancer receives personalized feedback and guided progression.'
+      desc: 'Small student-to-teacher batches ensuring every dancer receives personalized feedback and guided progression.'
     },
     {
       icon: Target,
@@ -63,8 +63,8 @@ export const WhyOmNatraj = () => {
         {/* 6 Feature Pillars Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '2rem'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+          gap: 'clamp(1.25rem, 2.5vw, 2rem)'
         }}>
           {pillars.map((item, idx) => {
             const Icon = item.icon;

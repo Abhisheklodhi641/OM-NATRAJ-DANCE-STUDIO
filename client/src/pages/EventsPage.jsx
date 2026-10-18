@@ -5,7 +5,7 @@ import { api } from '../services/api';
 import { LeadEnquiryForm } from '../components/LeadEnquiryForm';
 
 export const EventsPage = () => {
-  const { getWhatsAppUrl } = useStudio();
+  const { getWhatsAppUrl, settings = {} } = useStudio();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,7 +45,7 @@ export const EventsPage = () => {
             lineHeight: 1.5,
             fontWeight: 300
           }}>
-            From seasonal Navratri Garba intensive training to annual stage festivals and masterclasses with guest choreographers in Indore.
+            From seasonal Navratri Garba intensive training to annual stage festivals and masterclasses with guest choreographers{settings.city ? ` in ${settings.city}` : ''}.
           </p>
         </div>
       </section>
@@ -55,8 +55,8 @@ export const EventsPage = () => {
           
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: '2.5rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+            gap: 'clamp(1.5rem, 3vw, 2.5rem)',
             marginBottom: '5rem'
           }}>
             {events.map((item) => (
@@ -91,7 +91,7 @@ export const EventsPage = () => {
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-dim)', fontSize: '0.86rem', marginBottom: '1.25rem' }}>
                       <MapPin size={14} color="var(--accent-gold)" />
-                      {item.location || 'Om Natraj Dance Studio, Indore'}
+                      {item.location || (settings.city ? `${settings.studioName || 'Om Natraj Dance Studio'}, ${settings.city}` : (settings.studioName || 'Om Natraj Dance Studio'))}
                     </div>
 
                     <p style={{
@@ -108,7 +108,7 @@ export const EventsPage = () => {
 
                 <div style={{ padding: '0 2rem 2rem 2rem', display: 'flex', gap: '12px' }}>
                   <a
-                    href={getWhatsAppUrl(`Hi Om Natraj Studio! I would like to book a seat for the "${item.name}" event in Indore.`)}
+                    href={getWhatsAppUrl(`Hi ${settings.studioName || 'Om Natraj Studio'}! I would like to book a seat for the "${item.name}" event${settings.city ? ` in ${settings.city}` : ''}.`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-whatsapp"
