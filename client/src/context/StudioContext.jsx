@@ -171,4 +171,24 @@ export const StudioProvider = ({ children }) => {
   );
 };
 
-export const useStudio = () => useContext(StudioContext);
+export const useStudio = () => {
+  const context = useContext(StudioContext);
+  if (!context) {
+    return {
+      settings: {
+        studioName: 'OM NATRAJ DANCE STUDIO',
+        city: 'Banmore',
+        state: 'Madhya Pradesh',
+        whatsappNumber: '919893000000',
+        phone: '+91 98930 00000',
+        address: 'Near Old Bus Stand, Banmore, Morena, Madhya Pradesh',
+      },
+      loading: false,
+      refreshSettings: () => {},
+      getWhatsAppUrl: (msg) => `https://wa.me/?text=${encodeURIComponent(msg || '')}`,
+      getProductWhatsAppUrl: () => 'https://wa.me/',
+      getMapEmbedUrl: () => ''
+    };
+  }
+  return context;
+};

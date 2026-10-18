@@ -5,6 +5,8 @@ import { useStudio } from '../context/StudioContext';
 
 export const WorkshopsEvents = ({ events = [] }) => {
   const { settings = {}, getWhatsAppUrl } = useStudio();
+  const studioName = settings?.studioName || 'Om Natraj Dance Studio';
+  const city = settings?.city || '';
 
   const eventList = events.length > 0
     ? events
@@ -75,7 +77,15 @@ export const WorkshopsEvents = ({ events = [] }) => {
               <div>
                 {/* Event Image Box */}
                 <div className="class-card-image-box">
-                  <img src={item.image} alt={item.name} className="class-card-image" />
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="class-card-image"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = '/images/garba-dance.jpg';
+                    }}
+                  />
                   <span className="class-card-badge">{item.badge || 'Workshop'}</span>
                 </div>
 
@@ -105,7 +115,7 @@ export const WorkshopsEvents = ({ events = [] }) => {
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-dim)', fontSize: '0.86rem', marginBottom: '1.25rem' }}>
                     <MapPin size={14} color="var(--accent-gold)" />
-                    {item.location || (settings.city ? `${settings.city} Studio` : 'Main Studio')}
+                    {item.location || (city ? `${city} Studio` : 'Main Studio')}
                   </div>
 
                   <p style={{
@@ -127,7 +137,7 @@ export const WorkshopsEvents = ({ events = [] }) => {
                 gap: '12px'
               }}>
                 <a
-                  href={getWhatsAppUrl(`Hi ${settings.studioName || 'Om Natraj Studio'}! I would like to book a seat for the "${item.name}" event${settings.city ? ` in ${settings.city}` : ''}.`)}
+                  href={getWhatsAppUrl(`Hi ${studioName}! I would like to book a seat for the "${item.name}" event${city ? ` in ${city}` : ''}.`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-whatsapp"

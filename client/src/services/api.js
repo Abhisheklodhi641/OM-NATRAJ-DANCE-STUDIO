@@ -1,5 +1,7 @@
 const rawBase = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
-const API_BASE = 'https://om-natraj-dance-studio-backend.onrender.com/api';
+const API_BASE = rawBase
+  ? (rawBase.endsWith('/api') ? rawBase : `${rawBase}/api`)
+  : (import.meta.env.PROD ? 'https://om-natraj-dance-studio-backend.onrender.com/api' : '/api');
 
 export const getAuthToken = () => localStorage.getItem('om_natraj_admin_token');
 export const setAuthToken = (token) => localStorage.setItem('om_natraj_admin_token', token);

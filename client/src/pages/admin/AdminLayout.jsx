@@ -17,6 +17,7 @@ import {
   X
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { ErrorBoundary } from '../../components/ErrorBoundary';
 
 export const AdminLayout = () => {
   const { admin, loading, logout, isAuthenticated } = useAuth();
@@ -213,7 +214,9 @@ export const AdminLayout = () => {
 
       {/* Main Content Pane */}
       <main className="admin-main">
-        <Outlet />
+        <ErrorBoundary isolated>
+          <Outlet />
+        </ErrorBoundary>
       </main>
     </div>
   );

@@ -34,6 +34,8 @@ import { AdminTestimonials } from './pages/admin/AdminTestimonials';
 import { AdminStatistics } from './pages/admin/AdminStatistics';
 import { AdminSettings } from './pages/admin/AdminSettings';
 
+import { ErrorBoundary } from './components/ErrorBoundary';
+
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   React.useEffect(() => {
@@ -48,7 +50,9 @@ const PublicLayout = ({ children }) => {
     <>
       <Navbar />
       <main id="main-content">
-        {children}
+        <ErrorBoundary>
+          {children}
+        </ErrorBoundary>
       </main>
       <Footer />
       <WhatsAppFloat />

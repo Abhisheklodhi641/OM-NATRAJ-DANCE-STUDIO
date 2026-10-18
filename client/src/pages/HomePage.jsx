@@ -7,7 +7,6 @@ import { DanceStyles } from '../components/DanceStyles';
 import { WhyOmNatraj } from '../components/WhyOmNatraj';
 import { PinnedStory } from '../components/PinnedStory';
 import { HorizontalGallery } from '../components/HorizontalGallery';
-import { StatisticsCounter } from '../components/StatisticsCounter';
 import { DanceMomentsVideo } from '../components/DanceMomentsVideo';
 import { WorkshopsEvents } from '../components/WorkshopsEvents';
 import { ProductsShowcase } from '../components/ProductsShowcase';
@@ -104,8 +103,6 @@ export const HomePage = () => {
       {/* 6. Horizontal Gallery ("Move. Feel. Express.") */}
       <HorizontalGallery items={gallery} onImageClick={openImageModal} />
 
-      {/* 7. Statistics Animated Counters */}
-      <StatisticsCounter />
 
       {/* 8. Dance Moments & Video Reels */}
       <DanceMomentsVideo videos={videos} onPlayVideo={openVideoModal} />
