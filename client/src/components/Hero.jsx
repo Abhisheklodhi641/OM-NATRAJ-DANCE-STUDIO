@@ -194,7 +194,7 @@ export const Hero = () => {
             lineHeight: 1.4
           }}>
             <Sparkles size={14} color="var(--accent-gold)" style={{ flexShrink: 0 }} />
-            {(settings.city ? `${settings.city}'S PREMIER DANCE ACADEMY` : 'PREMIER DANCE ACADEMY').toUpperCase()}
+            PREMIER DANCE STUDIO
           </span>
         </div>
 

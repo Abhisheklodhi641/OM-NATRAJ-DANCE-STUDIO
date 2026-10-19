@@ -75,11 +75,15 @@ export const processUploadedFile = async (file) => {
       };
     } catch (cloudErr) {
       console.error('[Cloudinary Upload Error]', cloudErr.message);
-      if (process.env.DISABLE_LOCAL_FALLBACK === 'true') {
+      if (process.env.NODE_ENV === 'production' || process.env.DISABLE_LOCAL_FALLBACK === 'true') {
         throw new Error(`Cloudinary upload failed: ${cloudErr.message}`);
       }
       console.warn('Falling back to local file URL.');
     }
+  }
+
+  if (process.env.NODE_ENV === 'production' || process.env.DISABLE_LOCAL_FALLBACK === 'true') {
+    throw new Error('Cloudinary is not configured or failed in production. Local uploads fallback is not allowed.');
   }
 
   // Fallback: Return server-relative URL
@@ -104,7 +108,7 @@ export const deleteUploadedFile = async (publicId, resourceType = 'image') => {
       return res;
     } catch (cloudErr) {
       console.warn('[Cloudinary Delete Warning]', cloudErr.message);
-      if (process.env.DISABLE_LOCAL_FALLBACK === 'true') {
+      if (process.env.NODE_ENV === 'production' || process.env.DISABLE_LOCAL_FALLBACK === 'true') {
         throw new Error(`Cloudinary deletion failed: ${cloudErr.message}`);
       }
     }

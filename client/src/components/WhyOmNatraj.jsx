@@ -56,7 +56,7 @@ export const WhyOmNatraj = () => {
             marginTop: '1rem',
             lineHeight: 1.6
           }}>
-            We combine the discipline of academy-grade dance pedagogy with the celebratory, vibrant spirit of Indian music and world-class stagecraft.
+            We combine the discipline of professional dance pedagogy with the celebratory, vibrant spirit of Indian music and world-class stagecraft.
           </p>
         </div>
 

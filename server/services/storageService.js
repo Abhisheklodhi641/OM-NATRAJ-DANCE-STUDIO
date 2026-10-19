@@ -47,7 +47,7 @@ const generateId = () => {
   return `${Date.now().toString(36)}${Math.random().toString(36).substring(2, 9)}`;
 };
 
-const isStrictDb = () => process.env.DISABLE_LOCAL_FALLBACK === 'true';
+const isStrictDb = () => process.env.NODE_ENV === 'production' || process.env.DISABLE_LOCAL_FALLBACK === 'true';
 
 /**
  * Storage Service that abstracts Mongoose and Local Persistent JSON storage

@@ -17,10 +17,12 @@ import {
   X
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useStudio } from '../../context/StudioContext';
 import { ErrorBoundary } from '../../components/ErrorBoundary';
 
 export const AdminLayout = () => {
   const { admin, loading, logout, isAuthenticated } = useAuth();
+  const { settings } = useStudio();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -131,9 +133,26 @@ export const AdminLayout = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: 'var(--accent-gold)'
+            color: 'var(--accent-gold)',
+            overflow: 'hidden'
           }}>
-            <svg width="18" height="18" viewBox="0 0 100 100">
+            <img
+              src={settings?.logoUrl || '/images/logo.jpeg'}
+              alt={settings?.studioName || 'OM NATRAJ DANCE STUDIO'}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              onError={(e) => {
+                if (!e.currentTarget.dataset.triedFallback) {
+                  e.currentTarget.dataset.triedFallback = 'true';
+                  e.currentTarget.src = '/images/logo.jpeg';
+                } else {
+                  e.currentTarget.style.display = 'none';
+                  if (e.currentTarget.nextElementSibling) {
+                    e.currentTarget.nextElementSibling.style.display = 'block';
+                  }
+                }
+              }}
+            />
+            <svg width="18" height="18" viewBox="0 0 100 100" style={{ display: 'none' }}>
               <circle cx="50" cy="50" r="46" fill="none" stroke="#d4af37" strokeWidth="4"/>
               <path d="M50 20 L58 42 L80 50 L58 58 L50 80 L42 58 L20 50 L42 42 Z" fill="#d4af37"/>
               <circle cx="50" cy="50" r="8" fill="#e2632b"/>

@@ -38,9 +38,26 @@ export const Footer = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: 'rgba(212, 175, 55, 0.1)'
+                background: 'rgba(212, 175, 55, 0.1)',
+                overflow: 'hidden'
               }}>
-                <svg width="20" height="20" viewBox="0 0 100 100">
+                <img
+                  src={settings.logoUrl || '/images/logo.jpeg'}
+                  alt={settings.studioName || 'OM NATRAJ DANCE STUDIO'}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  onError={(e) => {
+                    if (!e.currentTarget.dataset.triedFallback) {
+                      e.currentTarget.dataset.triedFallback = 'true';
+                      e.currentTarget.src = '/images/logo.jpeg';
+                    } else {
+                      e.currentTarget.style.display = 'none';
+                      if (e.currentTarget.nextElementSibling) {
+                        e.currentTarget.nextElementSibling.style.display = 'block';
+                      }
+                    }
+                  }}
+                />
+                <svg width="20" height="20" viewBox="0 0 100 100" style={{ display: 'none' }}>
                   <circle cx="50" cy="50" r="46" fill="none" stroke="#d4af37" strokeWidth="4"/>
                   <path d="M50 20 L58 42 L80 50 L58 58 L50 80 L42 58 L20 50 L42 42 Z" fill="#d4af37"/>
                   <circle cx="50" cy="50" r="8" fill="#e2632b"/>
@@ -75,7 +92,7 @@ export const Footer = () => {
               lineHeight: 1.6,
               marginBottom: '1.75rem'
             }}>
-              {settings.footerText || 'A premier dance academy fostering rhythm, confidence, and artistic performance.'}
+              {settings.footerText || 'A premier dance studio fostering rhythm, confidence, and artistic performance.'}
             </p>
 
             {/* Social Icons */}
@@ -240,7 +257,7 @@ export const Footer = () => {
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                 <MapPin size={20} color="var(--accent-gold)" style={{ flexShrink: 0, marginTop: '2px' }} />
                 <span style={{ fontSize: '0.92rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                  {settings.address || 'Studio Academy'}
+                  {settings.address || 'Studio Address'}
                 </span>
               </div>
 
@@ -299,7 +316,7 @@ export const Footer = () => {
             letterSpacing: '0.08em',
             color: 'var(--text-dim)'
           }}>
-            © {new Date().getFullYear()} {settings.studioName || 'OM NATRAJ DANCE STUDIO'}{settings.city ? ` • ${settings.city.toUpperCase()}` : ''}. ALL RIGHTS RESERVED.
+            © {new Date().getFullYear()} {settings.studioName || 'OM NATRAJ DANCE STUDIO'}. ALL RIGHTS RESERVED.
           </p>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>

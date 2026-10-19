@@ -78,6 +78,48 @@ const SettingsSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  // Branding
+  logoUrl: {
+    type: String,
+    default: ''
+  },
+  // Founder / About
+  founderName: {
+    type: String,
+    default: ''
+  },
+  founderDesignation: {
+    type: String,
+    default: ''
+  },
+  founderImage: {
+    type: String,
+    default: ''
+  },
+  shortIntroduction: {
+    type: String,
+    default: ''
+  },
+  biography: {
+    type: String,
+    default: ''
+  },
+  experience: {
+    type: String,
+    default: ''
+  },
+  specializations: {
+    type: String,
+    default: ''
+  },
+  achievements: {
+    type: String,
+    default: ''
+  },
+  founderQuote: {
+    type: String,
+    default: ''
+  },
   heroMedia: {
     type: String,
     default: '/images/hero-dance.jpg'
@@ -113,7 +155,7 @@ const SettingsSchema = new mongoose.Schema({
   },
   footerText: {
     type: String,
-    default: 'A premier dance academy fostering rhythm, confidence, and artistic performance.'
+    default: 'A premier dance studio fostering rhythm, confidence, and artistic performance.'
   }
 }, {
   timestamps: true

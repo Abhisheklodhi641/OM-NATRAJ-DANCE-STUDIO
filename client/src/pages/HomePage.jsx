@@ -94,7 +94,7 @@ export const HomePage = () => {
       {/* 3. Dance Disciplines & Interactive Preview */}
       <DanceStyles classes={classes} />
 
-      {/* 4. Why Om Natraj Academy */}
+      {/* 4. Why Om Natraj Dance Studio */}
       <WhyOmNatraj />
 
       {/* 5. Pinned Storytelling Section ("01 - Find Your Rhythm", "02 - Build Confidence", "03 - Own Stage") */}
@@ -274,10 +274,10 @@ export const HomePage = () => {
                   </div>
                   <div>
                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', letterSpacing: '0.12em', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
-                      Academy Address
+                      Studio Address
                     </span>
                     <span style={{ display: 'block', fontSize: '1.05rem', color: '#fff' }}>
-                      {settings.address || 'Studio Academy'}
+                      {settings.address || 'Studio Address'}
                     </span>
                   </div>
                 </div>

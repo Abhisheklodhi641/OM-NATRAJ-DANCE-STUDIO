@@ -66,9 +66,26 @@ export const Navbar = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 0 15px rgba(212, 175, 55, 0.2)'
+              boxShadow: '0 0 15px rgba(212, 175, 55, 0.2)',
+              overflow: 'hidden'
             }}>
-              <svg width="22" height="22" viewBox="0 0 100 100">
+              <img
+                src={settings.logoUrl || '/images/logo.jpeg'}
+                alt={settings.studioName || 'OM NATRAJ DANCE STUDIO'}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={(e) => {
+                  if (!e.currentTarget.dataset.triedFallback) {
+                    e.currentTarget.dataset.triedFallback = 'true';
+                    e.currentTarget.src = '/images/logo.jpeg';
+                  } else {
+                    e.currentTarget.style.display = 'none';
+                    if (e.currentTarget.nextElementSibling) {
+                      e.currentTarget.nextElementSibling.style.display = 'block';
+                    }
+                  }
+                }}
+              />
+              <svg width="22" height="22" viewBox="0 0 100 100" style={{ display: 'none' }}>
                 <circle cx="50" cy="50" r="46" fill="none" stroke="#d4af37" strokeWidth="4"/>
                 <path d="M50 20 L58 42 L80 50 L58 58 L50 80 L42 58 L20 50 L42 42 Z" fill="#d4af37"/>
                 <circle cx="50" cy="50" r="8" fill="#e2632b"/>
@@ -94,7 +111,7 @@ export const Navbar = () => {
                 textTransform: 'uppercase',
                 display: 'block'
               }}>
-                DANCE STUDIO • {(settings.city || 'ACADEMY').toUpperCase()}
+                DANCE STUDIO
               </span>
             </div>
           </Link>
@@ -165,12 +182,47 @@ export const Navbar = () => {
       {/* Fullscreen Mobile Drawer */}
       <div className={`mobile-nav-overlay ${mobileOpen ? 'is-open' : ''}`}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-          <div>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)' }}>
-              {settings.studioName || 'OM NATRAJ'}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '50%',
+              border: '1px solid var(--border-gold)',
+              background: 'radial-gradient(circle, rgba(212,175,55,0.2) 0%, transparent 80%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden'
+            }}>
+              <img
+                src={settings.logoUrl || '/images/logo.jpeg'}
+                alt={settings.studioName || 'OM NATRAJ DANCE STUDIO'}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={(e) => {
+                  if (!e.currentTarget.dataset.triedFallback) {
+                    e.currentTarget.dataset.triedFallback = 'true';
+                    e.currentTarget.src = '/images/logo.jpeg';
+                  } else {
+                    e.currentTarget.style.display = 'none';
+                    if (e.currentTarget.nextElementSibling) {
+                      e.currentTarget.nextElementSibling.style.display = 'block';
+                    }
+                  }
+                }}
+              />
+              <svg width="20" height="20" viewBox="0 0 100 100" style={{ display: 'none' }}>
+                <circle cx="50" cy="50" r="46" fill="none" stroke="#d4af37" strokeWidth="4"/>
+                <path d="M50 20 L58 42 L80 50 L58 58 L50 80 L42 58 L20 50 L42 42 Z" fill="#d4af37"/>
+                <circle cx="50" cy="50" r="8" fill="#e2632b"/>
+              </svg>
             </div>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', letterSpacing: '0.2em', color: 'var(--accent-gold)' }}>
-              {(settings.city || 'BANMORE').toUpperCase()} ACADEMY
+            <div>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', lineHeight: 1.1 }}>
+                OM NATRAJ
+              </div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', letterSpacing: '0.2em', color: 'var(--accent-gold)', textTransform: 'uppercase' }}>
+                DANCE STUDIO
+              </div>
             </div>
           </div>
           <button

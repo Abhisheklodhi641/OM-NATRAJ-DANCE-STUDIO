@@ -21,6 +21,16 @@ export const StudioProvider = ({ children }) => {
     youtubeUrl: 'https://www.youtube.com/@OMNDS',
     instagramUrl: 'https://instagram.com/omnatrajdancestudio',
     facebookUrl: '',
+    logoUrl: '',
+    founderName: '',
+    founderDesignation: '',
+    founderImage: '',
+    shortIntroduction: '',
+    biography: '',
+    experience: '',
+    specializations: '',
+    achievements: '',
+    founderQuote: '',
     introHeading: "Dance is not just about learning steps.\nIt's about finding your own rhythm.",
     introSubtext: 'Rooted in the timeless grace of Indian rhythm and propelled by cutting-edge contemporary choreography. We mold aspiring dancers into stage-ready performers.',
     statistics: [
@@ -29,7 +39,7 @@ export const StudioProvider = ({ children }) => {
       { id: 'styles', label: 'Dance Styles', value: 8, prefix: '', suffix: '+' },
       { id: 'events', label: 'Events & Workshops', value: 150, prefix: '', suffix: '+' }
     ],
-    footerText: 'A premier dance academy fostering rhythm, confidence, and artistic performance.'
+    footerText: 'A premier dance studio fostering rhythm, confidence, and artistic performance.'
   });
 
   const [loading, setLoading] = useState(true);
@@ -57,14 +67,14 @@ export const StudioProvider = ({ children }) => {
 
     // Dynamic Title
     const locationSuffix = settings.city ? ` in ${settings.city}` : '';
-    document.title = `${settings.studioName} | Premier Dance Academy${locationSuffix}`;
+    document.title = `${settings.studioName} | Premier Dance Studio${locationSuffix}`;
 
     // Dynamic Meta Description
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute(
         'content',
-        `${settings.studioName}${settings.city ? ` in ${settings.city}, ${settings.state || ''}` : ''}. ${settings.tagline || 'Where movement becomes expression.'} Premier dance academy offering Bollywood, Garba, Contemporary, Hip-Hop and wedding choreography.`
+        `${settings.studioName}${settings.city ? ` in ${settings.city}, ${settings.state || ''}` : ''}. ${settings.tagline || 'Where movement becomes expression.'} Premier dance studio offering Bollywood, Garba, Contemporary, Hip-Hop and wedding choreography.`
       );
     }
 
@@ -75,7 +85,7 @@ export const StudioProvider = ({ children }) => {
     }
     const ogDesc = document.querySelector('meta[property="og:description"]');
     if (ogDesc) {
-      ogDesc.setAttribute('content', `Premier dance academy${settings.city ? ` in ${settings.city}` : ''}. Experience world-class choreography, passionate faculty, and immersive stage craft.`);
+      ogDesc.setAttribute('content', `Premier dance studio${settings.city ? ` in ${settings.city}` : ''}. Experience world-class choreography, passionate faculty, and immersive stage craft.`);
     }
 
     // Dynamic JSON-LD Structured Data
@@ -177,6 +187,7 @@ export const useStudio = () => {
     return {
       settings: {
         studioName: 'OM NATRAJ DANCE STUDIO',
+        logoUrl: '',
         city: 'Banmore',
         state: 'Madhya Pradesh',
         whatsappNumber: '919893000000',

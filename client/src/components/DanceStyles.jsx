@@ -43,7 +43,7 @@ export const DanceStyles = ({ classes = [] }) => {
         },
         {
           _id: '5',
-          name: 'Little Stars - Kids Academy',
+          name: 'Little Stars - Kids Dance Program',
           danceStyle: 'Kids Dance',
           description: 'A playful and disciplined curriculum teaching young kids rhythm, motor coordination, flexibility, and stage presence with joyful confidence.',
           image: '/images/kids-dance.jpg',

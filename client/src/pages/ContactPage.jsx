@@ -27,7 +27,7 @@ export const ContactPage = () => {
             lineHeight: 1.5,
             fontWeight: 300
           }}>
-            Ready to find your rhythm? Visit our academy{settings.city ? ` in ${settings.city}` : ''}, message us on WhatsApp, or book your trial batch below.
+            Ready to find your rhythm? Visit our dance studio{settings.city ? ` in ${settings.city}` : ''}, message us on WhatsApp, or book your trial batch below.
           </p>
         </div>
       </section>
@@ -134,7 +134,7 @@ export const ContactPage = () => {
                         Studio Location
                       </span>
                       <p style={{ fontSize: '1.05rem', color: '#fff', lineHeight: 1.5, margin: 0 }}>
-                        {settings.address || 'Studio Academy'}
+                        {settings.address || 'Studio Address'}
                       </p>
                     </div>
                   </div>

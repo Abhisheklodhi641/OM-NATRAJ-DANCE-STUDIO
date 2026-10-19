@@ -37,7 +37,7 @@ export const WorkshopsEvents = ({ events = [] }) => {
           date: 'DEC 20, 2026',
           time: '6:00 PM onwards',
           location: 'Grand Auditorium Stage',
-          description: 'Our premier annual dance festival where all academy students take the stage in front of a live 1,000+ audience.',
+          description: 'Our premier annual dance festival where all studio students take the stage in front of a live 1,000+ audience.',
           image: '/images/hero-dance.jpg',
           badge: 'Annual Concert'
         }

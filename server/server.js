@@ -73,6 +73,7 @@ app.get('/api/health', (req, res) => {
     mongoStatus,
     databaseName: mongoose.connection.name || 'omnatraj',
     fallbackLocalStorage: 'NOT USED',
+    environment: process.env.NODE_ENV || 'development',
     timestamp: new Date().toISOString()
   });
 });

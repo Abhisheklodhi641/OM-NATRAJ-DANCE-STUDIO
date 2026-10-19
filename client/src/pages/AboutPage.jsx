@@ -32,7 +32,7 @@ export const AboutPage = () => {
         </div>
       </section>
 
-      {/* Studio Image & Vision Story */}
+      {/* Studio Image & Vision / Founder Story */}
       <section className="section-spacer" style={{ background: 'var(--bg-secondary)' }}>
         <div className="site-container">
           <div style={{
@@ -50,9 +50,12 @@ export const AboutPage = () => {
               boxShadow: '0 20px 50px rgba(0,0,0,0.6)'
             }}>
               <img
-                src={settings.aboutImage || "/images/studio-interior.jpg"}
-                alt="Om Natraj Dance Studio Space"
+                src={settings.founderImage || settings.aboutImage || "/images/studio-interior.jpg"}
+                alt={settings.founderName ? `${settings.founderName} - ${settings.founderDesignation || 'Founder'}` : (settings.studioName || 'Om Natraj Dance Studio')}
                 style={{ width: '100%', height: '480px', objectFit: 'cover' }}
+                onError={(e) => {
+                  e.currentTarget.src = "/images/studio-interior.jpg";
+                }}
               />
               <div style={{
                 position: 'absolute',
@@ -66,49 +69,94 @@ export const AboutPage = () => {
                 borderRadius: '4px'
               }}>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--accent-gold)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-                  THE STUDIO FACILITY • {(settings.city || 'ACADEMY').toUpperCase()}
+                  {settings.founderDesignation ? settings.founderDesignation.toUpperCase() : 'LEADERSHIP & DIRECTION'}
                 </span>
                 <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', color: '#fff', fontStyle: 'italic', marginTop: '4px' }}>
-                  Acoustically treated studio, sprung wooden dance flooring & cinematic ambient stage lighting.
+                  {settings.founderQuote ? `"${settings.founderQuote}"` : (settings.tagline ? `"${settings.tagline}"` : 'Acoustically treated studio, sprung wooden dance flooring & cinematic ambient stage lighting.')}
                 </p>
               </div>
             </div>
 
             {/* Narrative Copy */}
             <div>
-              <span className="section-eyebrow">Artistic Vision</span>
+              <span className="section-eyebrow">
+                {settings.founderDesignation || 'Artistic Vision'}
+              </span>
               <h2 className="editorial-section-title" style={{ fontSize: '2.6rem', marginBottom: '1.5rem' }}>
-                Where Every Step Tells <span className="editorial-italic">A Story</span>
+                {settings.founderName ? (
+                  <>
+                    {settings.founderName.split(' ')[0]} <span className="editorial-italic">{settings.founderName.split(' ').slice(1).join(' ') || ''}</span>
+                  </>
+                ) : (
+                  <>
+                    Where Every Step Tells <span className="editorial-italic">A Story</span>
+                  </>
+                )}
               </h2>
 
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: '1.5rem' }}>
-                At {settings.studioName || 'Om Natraj Dance Studio'}, dance is not treated as mere physical exercise or memorizing rigid steps. It is a language of emotion, culture, and individual empowerment.
+                {settings.shortIntroduction || `At ${settings.studioName || 'Om Natraj Dance Studio'}, dance is not treated as mere physical exercise or memorizing rigid steps. It is a language of emotion, culture, and individual empowerment.`}
               </p>
 
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: '2.5rem' }}>
-                From authentic folk Garba traditions to high-velocity commercial Bollywood and expressive lyrical Contemporary, our faculty ensures students master musicality, stamina, stage presence, and confidence.
+                {settings.biography || 'From authentic folk Garba traditions to high-velocity commercial Bollywood and expressive lyrical Contemporary, our faculty ensures students master musicality, stamina, stage presence, and confidence.'}
               </p>
 
+              {/* Dynamic Highlights / Badges Grid */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
-                <div style={{ borderLeft: '2px solid var(--accent-gold)', paddingLeft: '14px' }}>
-                  <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--accent-gold)', fontWeight: 700 }}>
-                    100%
-                  </h4>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                    Passionate Faculty
-                  </span>
-                </div>
-                <div style={{ borderLeft: '2px solid var(--accent-gold)', paddingLeft: '14px' }}>
-                  <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--accent-gold)', fontWeight: 700 }}>
-                    {settings.city || 'Madhya Pradesh'}
-                  </h4>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                    {settings.state ? `Heart of ${settings.state}` : 'Studio Academy'}
-                  </span>
-                </div>
+                {settings.experience ? (
+                  <div style={{ borderLeft: '2px solid var(--accent-gold)', paddingLeft: '14px' }}>
+                    <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', color: 'var(--accent-gold)', fontWeight: 700 }}>
+                      {settings.experience}
+                    </h4>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                      Dance Experience
+                    </span>
+                  </div>
+                ) : (
+                  <div style={{ borderLeft: '2px solid var(--accent-gold)', paddingLeft: '14px' }}>
+                    <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--accent-gold)', fontWeight: 700 }}>
+                      100%
+                    </h4>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                      Passionate Faculty
+                    </span>
+                  </div>
+                )}
+
+                {settings.specializations ? (
+                  <div style={{ borderLeft: '2px solid var(--accent-gold)', paddingLeft: '14px' }}>
+                    <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.15rem', color: 'var(--accent-gold)', fontWeight: 700, lineHeight: 1.3, marginBottom: '4px' }}>
+                      {settings.specializations}
+                    </h4>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                      Styles & Specializations
+                    </span>
+                  </div>
+                ) : (
+                  <div style={{ borderLeft: '2px solid var(--accent-gold)', paddingLeft: '14px' }}>
+                    <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--accent-gold)', fontWeight: 700 }}>
+                      {settings.city || 'Madhya Pradesh'}
+                    </h4>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                      {settings.state ? `Heart of ${settings.state}` : 'Studio Facility'}
+                    </span>
+                  </div>
+                )}
+
+                {settings.achievements && (
+                  <div style={{ borderLeft: '2px solid var(--accent-gold)', paddingLeft: '14px', gridColumn: '1 / -1' }}>
+                    <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', color: 'var(--accent-gold)', fontWeight: 600, lineHeight: 1.4, marginBottom: '4px' }}>
+                      {settings.achievements}
+                    </h4>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                      Achievements & Certifications
+                    </span>
+                  </div>
+                )}
               </div>
 
-              <div style={{ display: 'flex', gap: '16px' }}>
+              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
                 <Link to="/classes" className="btn btn-primary">
                   Explore Classes
                   <ArrowUpRight size={16} />

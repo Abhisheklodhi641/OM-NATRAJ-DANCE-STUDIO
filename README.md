@@ -1,7 +1,7 @@
 # OM NATRAJ DANCE STUDIO
 
 > **"Where Movement Becomes Expression."**  
-> *Premier Dance Academy based in Banmore, Morena, Madhya Pradesh, India.*
+> *Premier Dance Studio based in Banmore, Morena, Madhya Pradesh, India.*
 
 A cinematic, modern, high-performance web platform designed for **OM NATRAJ DANCE STUDIO**. Built with React, GSAP, Node.js, Express, MongoDB, and direct media upload architecture.
 

@@ -22,6 +22,16 @@ const getDefaultSettings = () => ({
   youtubeUrl: 'https://www.youtube.com/@OMNDS',
   instagramUrl: 'https://instagram.com/omnatrajdancestudio',
   facebookUrl: '',
+  logoUrl: '',
+  founderName: '',
+  founderDesignation: '',
+  founderImage: '',
+  shortIntroduction: '',
+  biography: '',
+  experience: '',
+  specializations: '',
+  achievements: '',
+  founderQuote: '',
   heroMedia: '/images/hero-dance.jpg',
   aboutImage: '/images/masterclass-action.jpg',
   cinematicVideo: '',
@@ -34,7 +44,7 @@ const getDefaultSettings = () => ({
     { id: 'styles', label: 'Dance Styles', value: 8, prefix: '', suffix: '+', description: 'Bollywood, Garba, Hip-Hop, Contemporary & more' },
     { id: 'events', label: 'Events & Workshops', value: 150, prefix: '', suffix: '+', description: 'Annual concerts, sangeet & cultural fests' }
   ],
-  footerText: 'A premier dance academy fostering rhythm, confidence, and artistic performance.'
+  footerText: 'A premier dance studio fostering rhythm, confidence, and artistic performance.'
 });
 
 // GET /api/settings - Public

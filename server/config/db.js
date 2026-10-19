@@ -38,8 +38,8 @@ export const connectDB = async () => {
   mongoose.connection.on('disconnected', () => {
     isMongoConnected = false;
     console.warn(`[Database Warning] MongoDB disconnected.`);
-    if (process.env.DISABLE_LOCAL_FALLBACK === 'true') {
-      console.error(`[Database Error] Local fallback is strictly disabled.`);
+    if (process.env.NODE_ENV === 'production' || process.env.DISABLE_LOCAL_FALLBACK === 'true') {
+      console.error(`[Database Error] Local fallback is strictly disabled in production.`);
     }
   });
 
@@ -56,11 +56,11 @@ export const connectDB = async () => {
   } catch (error) {
     isMongoConnected = false;
     console.error(`[Database Error] MongoDB Atlas connection error: ${error.message}`);
-    if (process.env.DISABLE_LOCAL_FALLBACK === 'true') {
-      throw new Error(`MongoDB Atlas connection failed: ${error.message}`);
+    if (process.env.NODE_ENV === 'production' || process.env.DISABLE_LOCAL_FALLBACK === 'true') {
+      throw new Error(`[Database Error] MongoDB Atlas connection failed: ${error.message}. Local JSON fallback is strictly NOT ALLOWED in production.`);
     }
-    console.warn(`[Database] MongoDB Atlas not directly reachable (${error.message}).`);
-    console.log(`[Database] Activating Resilient Local Persistent Storage Engine (server/data/). All CRUD, Leads & Settings will work seamlessly without downtime.`);
+    console.warn(`[Database Development Warning] MongoDB Atlas not directly reachable (${error.message}).`);
+    console.log(`[Database] Activating Development Local Storage Engine (server/data/) because NODE_ENV !== 'production'.`);
     
     // Ensure data directory exists
     const dataDir = path.join(__dirname, '..', 'data');

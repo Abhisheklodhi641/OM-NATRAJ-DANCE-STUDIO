@@ -61,6 +61,11 @@ export const syncStaticMediaToCloudinary = async () => {
  * Main Database Seeding function - Idempotent & Duplicate-Proof Upsert
  */
 export const seedDatabase = async () => {
+  if (!isMongoConnected) {
+    console.log('[Seed] MongoDB Atlas is not connected; skipping Mongo seeding. Local storage engine is active.');
+    return;
+  }
+
   try {
     console.log('\n[Seed] Starting permanent database seeding into MongoDB Atlas...');
 
@@ -125,6 +130,16 @@ export const seedDatabase = async () => {
       youtubeUrl: 'https://www.youtube.com/@OMNDS',
       instagramUrl: 'https://instagram.com/omnatrajdancestudio',
       facebookUrl: '',
+      logoUrl: '',
+      founderName: 'Om Natraj',
+      founderDesignation: 'Founder & Artistic Director',
+      founderImage: resolveUrl('/images/studio-interior.jpg'),
+      shortIntroduction: 'Rooted in the timeless grace of Indian rhythm and propelled by cutting-edge contemporary choreography.',
+      biography: 'Dedicated to cultivating rhythm, confidence, and artistic expression, leading dancers of all skill levels to discover their potential and shine on stage.',
+      experience: '12+ Years',
+      specializations: 'Bollywood, Garba, Contemporary & Hip-Hop',
+      achievements: 'Trained 2,500+ Dancers • 150+ Stage Productions',
+      founderQuote: "Dance is not just about learning steps. It's about finding your own rhythm.",
       heroMedia: resolveUrl('/images/hero-dance.jpg'),
       aboutImage: resolveUrl('/images/studio-interior.jpg'),
       cinematicVideo: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
@@ -137,7 +152,7 @@ export const seedDatabase = async () => {
         { id: 'styles', label: 'Dance Styles', value: 8, prefix: '', suffix: '+', description: 'Bollywood, Garba, Hip-Hop, Contemporary & more' },
         { id: 'events', label: 'Events & Workshops', value: 150, prefix: '', suffix: '+', description: 'Annual concerts, sangeet & cultural fests' }
       ],
-      footerText: 'A premier dance academy fostering rhythm, confidence, and artistic performance in Banmore, Morena, Madhya Pradesh.'
+      footerText: 'A premier dance studio fostering rhythm, confidence, and artistic performance in Banmore, Morena, Madhya Pradesh.'
     };
 
     const existingSettings = await SettingsModel.find();
@@ -276,7 +291,7 @@ export const seedDatabase = async () => {
         date: 'DEC 20, 2026',
         time: '6:00 PM onwards',
         location: 'Banmore Auditorium, Morena, MP',
-        description: 'Our premier annual dance festival where all Om Natraj academy students take the stage in front of a live 1,000+ audience in Banmore, Morena.',
+        description: 'Our premier annual dance festival where all Om Natraj dance studio students take the stage in front of a live 1,000+ audience in Banmore, Morena.',
         image: resolveUrl('/images/hero-dance.jpg'),
         badge: 'Annual Concert',
         status: 'upcoming'

@@ -145,7 +145,7 @@ export const ClassesPage = () => {
                   No Batches Currently Available
                 </h3>
                 <p style={{ color: 'var(--text-muted)', maxWidth: '540px', margin: '0 auto 2rem auto', fontSize: '0.95rem', lineHeight: 1.6 }}>
-                  {error || 'We are regularly opening new morning, evening, and weekend batches. Connect directly with our academy counselors on WhatsApp for bespoke batch timings and upcoming admissions.'}
+                  {error || 'We are regularly opening new morning, evening, and weekend batches. Connect directly with our studio counselors on WhatsApp for bespoke batch timings and upcoming admissions.'}
                 </p>
                 <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
                   {error && (

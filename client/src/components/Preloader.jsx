@@ -30,9 +30,26 @@ export const Preloader = () => {
           border: '1px solid rgba(212, 175, 55, 0.4)',
           marginBottom: '24px',
           background: 'rgba(212, 175, 55, 0.05)',
-          boxShadow: '0 0 30px rgba(212, 175, 55, 0.2)'
+          boxShadow: '0 0 30px rgba(212, 175, 55, 0.2)',
+          overflow: 'hidden'
         }}>
-          <svg width="32" height="32" viewBox="0 0 100 100">
+          <img
+            src={settings.logoUrl || '/images/logo.jpeg'}
+            alt={settings.studioName || 'OM NATRAJ DANCE STUDIO'}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            onError={(e) => {
+              if (!e.currentTarget.dataset.triedFallback) {
+                e.currentTarget.dataset.triedFallback = 'true';
+                e.currentTarget.src = '/images/logo.jpeg';
+              } else {
+                e.currentTarget.style.display = 'none';
+                if (e.currentTarget.nextElementSibling) {
+                  e.currentTarget.nextElementSibling.style.display = 'block';
+                }
+              }
+            }}
+          />
+          <svg width="32" height="32" viewBox="0 0 100 100" style={{ display: 'none' }}>
             <circle cx="50" cy="50" r="46" fill="none" stroke="#d4af37" strokeWidth="3" opacity="0.6"/>
             <path d="M50 20 L58 42 L80 50 L58 58 L50 80 L42 58 L20 50 L42 42 Z" fill="#d4af37"/>
             <circle cx="50" cy="50" r="8" fill="#e2632b"/>
@@ -48,7 +65,7 @@ export const Preloader = () => {
           color: '#f7f4ee',
           marginBottom: '6px'
         }}>
-          {settings.studioName || 'OM NATRAJ'}
+          OM NATRAJ
         </h1>
         
         <p style={{
@@ -59,7 +76,7 @@ export const Preloader = () => {
           color: 'var(--accent-gold)',
           marginBottom: '28px'
         }}>
-          DANCE STUDIO • {(settings.city || 'ACADEMY').toUpperCase()}
+          DANCE STUDIO
         </p>
 
         {/* Minimal Animated Line / Movement Indicator */}
