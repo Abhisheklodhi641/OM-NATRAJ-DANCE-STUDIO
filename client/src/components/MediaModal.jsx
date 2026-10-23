@@ -2,20 +2,22 @@ import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 
 /**
- * Normalizes Cloudinary video URLs for universal browser & mobile playback.
- * Injects f_auto,q_auto,vc_h264 transformations so Cloudinary delivers universal
- * H.264 MP4 streams to all browsers (Chromium, Firefox, Safari, iOS, Android)
- * without blindly renaming extensions or breaking delivery.
+ * Normalizes video URLs for universal browser & mobile playback.
+ * Preserves clean Cloudinary MP4 and MOV streams without injecting
+ * dynamic on-the-fly transformations that strip HTTP range support
+ * (Accept-Ranges: none) and break progressive HTML5 playback in Chrome/iOS/Android.
  */
 const getOptimizedVideoUrl = (url) => {
   if (!url || typeof url !== 'string') return url;
+  
+  // If URL already contains broken or redundant dynamic transformation, clean it
   if (url.includes('res.cloudinary.com') && url.includes('/video/upload/')) {
-    let transformed = url;
-    if (!transformed.includes('/video/upload/f_') && !transformed.includes('/video/upload/vc_') && !transformed.includes('/video/upload/q_')) {
-      transformed = transformed.replace('/video/upload/', '/video/upload/f_auto,q_auto,vc_h264/');
-    }
-    return transformed;
+    // Remove conflicting on-the-fly video transformations if present
+    let cleaned = url.replace('/video/upload/f_auto,q_auto,vc_h264/', '/video/upload/');
+    cleaned = cleaned.replace('/video/upload/f_auto,q_auto/', '/video/upload/');
+    return cleaned;
   }
+  
   return url;
 };
 
@@ -52,6 +54,7 @@ export const MediaModal = ({ isOpen, onClose, mediaUrl, mediaType = 'image', tit
         {mediaType === 'video' ? (
           <div style={{ width: '100%', borderRadius: '6px', overflow: 'hidden', background: '#000', boxShadow: '0 20px 50px rgba(0,0,0,0.8)' }}>
             <video
+              key={mediaUrl}
               src={getOptimizedVideoUrl(mediaUrl)}
               controls
               controlsList="nodownload noplaybackrate"
@@ -59,6 +62,7 @@ export const MediaModal = ({ isOpen, onClose, mediaUrl, mediaType = 'image', tit
               onContextMenu={(e) => e.preventDefault()}
               autoPlay
               playsInline
+              preload="metadata"
               style={{ width: '100%', maxHeight: '80vh', display: 'block' }}
             />
           </div>

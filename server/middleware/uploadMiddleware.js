@@ -57,11 +57,12 @@ export const processUploadedFile = async (file) => {
   if (isCloudinaryConfigured) {
     try {
       const isVideo = file.mimetype.startsWith('video/') || /\.(mp4|mov|webm|m4v|3gp|quicktime)$/i.test(file.originalname);
+      const isAlreadyMp4 = /\.mp4$/i.test(file.originalname) || file.mimetype === 'video/mp4';
       const uploadOptions = {
         resource_type: isVideo ? 'video' : 'image',
         folder: 'om_natraj_dance_studio'
       };
-      if (isVideo) {
+      if (isVideo && !isAlreadyMp4) {
         uploadOptions.format = 'mp4';
       }
       const result = await cloudinary.uploader.upload(file.path, uploadOptions);
