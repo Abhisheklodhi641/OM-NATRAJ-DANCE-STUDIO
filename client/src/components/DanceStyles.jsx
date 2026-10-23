@@ -5,60 +5,13 @@ import { useStudio } from '../context/StudioContext';
 
 export const DanceStyles = ({ classes = [] }) => {
   const { settings } = useStudio();
-  // Styles list from classes or editable defaults
-  const stylesList = classes.length > 0
-    ? classes
-    : [
-        {
-          _id: '1',
-          name: 'Bollywood Commercial',
-          danceStyle: 'Bollywood',
-          description: 'High-energy choreography blending expressive Indian cinematic expressions with sharp modern stage footwork and camera performance technique.',
-          image: '/images/bollywood-hiphop.jpg',
-          level: 'All Levels'
-        },
-        {
-          _id: '2',
-          name: 'Authentic Gujarati Garba',
-          danceStyle: 'Garba',
-          description: 'Master traditional Gujarati Dodhiya, 2-Taali, 3-Taali, high-velocity spins, and energetic choreography tailored for Navratri and stage events.',
-          image: '/images/garba-dance.jpg',
-          level: 'Beginner to Pro'
-        },
-        {
-          _id: '3',
-          name: 'Contemporary & Lyrical Flow',
-          danceStyle: 'Contemporary',
-          description: 'Explore the boundaries of physical storytelling through floor work, release technique, spatial awareness, and deeply emotive musicality.',
-          image: '/images/hero-dance.jpg',
-          level: 'Intermediate+'
-        },
-        {
-          _id: '4',
-          name: 'Urban Street & Hip-Hop',
-          danceStyle: 'Hip Hop',
-          description: 'Grooves, popping, breaking basics, isolation, and fast-paced commercial routines with an emphasis on personal attitude and freestyle confidence.',
-          image: '/images/bollywood-hiphop.jpg',
-          level: 'All Ages'
-        },
-        {
-          _id: '5',
-          name: 'Little Stars - Kids Dance Program',
-          danceStyle: 'Kids Dance',
-          description: 'A playful and disciplined curriculum teaching young kids rhythm, motor coordination, flexibility, and stage presence with joyful confidence.',
-          image: '/images/kids-dance.jpg',
-          level: 'Ages 4-12'
-        },
-        {
-          _id: '6',
-          name: 'Bespoke Wedding & Sangeet',
-          danceStyle: 'Wedding Choreography',
-          description: 'Personalized private couple routines, grand bridal entries, family group flashmobs, and concept performances customized to your love story.',
-          image: '/images/wedding-dance.jpg',
-          level: 'Couples & Family'
-        }
-      ];
 
+  // If no classes are published in the database, do not render fake static data
+  if (!classes || classes.length === 0) {
+    return null;
+  }
+
+  const stylesList = classes;
   const [activeIndex, setActiveIndex] = useState(0);
   const activeStyle = stylesList[activeIndex] || stylesList[0];
 

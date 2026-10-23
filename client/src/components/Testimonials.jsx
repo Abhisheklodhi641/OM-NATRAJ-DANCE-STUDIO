@@ -4,31 +4,12 @@ import { Quote, Star, ArrowLeft, ArrowRight } from 'lucide-react';
 export const Testimonials = ({ testimonials = [] }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const items = testimonials.length > 0
-    ? testimonials
-    : [
-        {
-          _id: '1',
-          name: 'Pooja Verma',
-          role: 'Garba Workshop Participant',
-          testimonial: 'Om Natraj Dance Studio transformed my confidence completely. The instructors teach with so much patience and passion. Their Garba workshop prepared me to dance non-stop with real style!',
-          rating: 5
-        },
-        {
-          _id: '2',
-          name: 'Rohit & Shreya Sharma',
-          role: 'Wedding Sangeet Clients',
-          testimonial: 'Neither my husband nor I had ever danced on stage before. The team choreographed a magical, graceful routine for our sangeet that had everyone on their feet cheering.',
-          rating: 5
-        },
-        {
-          _id: '3',
-          name: 'Ananya Mehta',
-          role: 'Contemporary Student (2 Years)',
-          testimonial: 'The studio vibe is unlike anywhere else. High energy, artistic integrity, and true technique. It has become my second home.',
-          rating: 5
-        }
-      ];
+  // If no testimonials exist in the database, do not render fake static data
+  if (!testimonials || testimonials.length === 0) {
+    return null;
+  }
+
+  const items = testimonials;
 
   const current = items[activeIndex] || items[0];
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin, ArrowUpRight, Lock } from 'lucide-react';
+import { Phone, Mail, MapPin, ArrowUpRight } from 'lucide-react';
 import { useStudio } from '../context/StudioContext';
 
 export const Footer = () => {
@@ -327,27 +327,6 @@ export const Footer = () => {
             }}>
               {settings.city ? `${settings.city}, ${settings.state || ''}` : ''}
             </span>
-
-            <Link
-              to="/admin/login"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.75rem',
-                color: 'var(--text-dim)',
-                textDecoration: 'none',
-                opacity: 0.6,
-                transition: 'opacity 0.2s ease, color 0.2s ease'
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = 'var(--accent-gold)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.color = 'var(--text-dim)'; }}
-              title="Admin Portal Login"
-            >
-              <Lock size={12} />
-              Admin Portal
-            </Link>
           </div>
         </div>
       </div>

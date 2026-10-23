@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { StorageService } from '../services/storageService.js';
 import { protectAdmin } from '../middleware/authMiddleware.js';
+import { deleteMediaByUrl } from '../middleware/uploadMiddleware.js';
 
 const router = express.Router();
 
@@ -82,6 +83,23 @@ router.delete('/:id', protectAdmin, async (req, res) => {
     }
     const deleted = await StorageService.findByIdAndDelete('videos', id);
     if (!deleted) return res.status(404).json({ success: false, message: 'Video not found' });
+
+    // Permanently destroy Cloudinary video and poster asset
+    if (deleted.videoUrl) {
+      try {
+        await deleteMediaByUrl(deleted.videoUrl, 'video');
+      } catch (mediaErr) {
+        console.warn('[Video Media Delete Warning]', mediaErr.message);
+      }
+    }
+    if (deleted.posterUrl) {
+      try {
+        await deleteMediaByUrl(deleted.posterUrl, 'image');
+      } catch (mediaErr) {
+        console.warn('[Video Poster Delete Warning]', mediaErr.message);
+      }
+    }
+
     res.json({ success: true, message: 'Video deleted' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to delete video' });

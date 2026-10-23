@@ -130,12 +130,28 @@ export const ProductsPage = () => {
       <section className="section-spacer" style={{ background: 'var(--bg-secondary)', paddingTop: '4rem' }}>
         <div className="site-container">
           
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
-            gap: 'clamp(1.5rem, 3vw, 2.5rem)'
-          }}>
-            {filtered.map((product) => {
+          {filtered.length === 0 && !loading ? (
+            <div style={{
+              textAlign: 'center',
+              padding: '4rem 1.5rem',
+              background: 'rgba(255,255,255,0.02)',
+              border: '1px solid var(--border-subtle)',
+              borderRadius: '4px'
+            }}>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: '#fff', marginBottom: '0.8rem' }}>
+                No Products Available
+              </h3>
+              <p style={{ color: 'var(--text-muted)', maxWidth: '540px', margin: '0 auto', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                New Garba outfits, ghungroos, and dance accessories are added regularly. Inquire via WhatsApp for custom requirements.
+              </p>
+            </div>
+          ) : (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+              gap: 'clamp(1.5rem, 3vw, 2.5rem)'
+            }}>
+              {filtered.map((product) => {
               const currentSize = selectedSizes[product._id] || (product.sizes && product.sizes[0]) || 'Free Size';
               const currentQty = quantities[product._id] || 1;
               const primaryImage = (product.images && product.images[0]) || '/images/garba-dress.jpg';
@@ -364,6 +380,7 @@ export const ProductsPage = () => {
               );
             })}
           </div>
+          )}
 
         </div>
       </section>

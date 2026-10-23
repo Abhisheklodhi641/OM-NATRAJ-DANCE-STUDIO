@@ -100,13 +100,29 @@ export const GalleryPage = () => {
       <section className="section-spacer" style={{ background: 'var(--bg-secondary)', paddingTop: '4rem' }}>
         <div className="site-container">
           
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
-            gap: 'clamp(1.25rem, 2.5vw, 2rem)',
-            alignItems: 'stretch'
-          }}>
-            {filtered.map((item, idx) => {
+          {filtered.length === 0 && !loading ? (
+            <div style={{
+              textAlign: 'center',
+              padding: '4rem 1.5rem',
+              background: 'rgba(255,255,255,0.02)',
+              border: '1px solid var(--border-subtle)',
+              borderRadius: '4px'
+            }}>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: '#fff', marginBottom: '0.8rem' }}>
+                No Photographs Available
+              </h3>
+              <p style={{ color: 'var(--text-muted)', maxWidth: '540px', margin: '0 auto', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                New stage visuals and dance moments are published regularly.
+              </p>
+            </div>
+          ) : (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
+              gap: 'clamp(1.25rem, 2.5vw, 2rem)',
+              alignItems: 'stretch'
+            }}>
+              {filtered.map((item, idx) => {
               // Create dynamic visual variety: some large cards, some portrait
               const isLarge = idx % 5 === 0;
               return (
@@ -203,6 +219,7 @@ export const GalleryPage = () => {
               );
             })}
           </div>
+          )}
 
         </div>
       </section>

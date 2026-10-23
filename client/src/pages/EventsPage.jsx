@@ -53,13 +53,30 @@ export const EventsPage = () => {
       <section className="section-spacer" style={{ background: 'var(--bg-secondary)', paddingTop: '4rem' }}>
         <div className="site-container">
           
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
-            gap: 'clamp(1.5rem, 3vw, 2.5rem)',
-            marginBottom: '5rem'
-          }}>
-            {events.map((item) => (
+          {events.length === 0 && !loading ? (
+            <div style={{
+              textAlign: 'center',
+              padding: '4rem 1.5rem',
+              background: 'rgba(255,255,255,0.02)',
+              border: '1px solid var(--border-subtle)',
+              borderRadius: '4px',
+              marginBottom: '5rem'
+            }}>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: '#fff', marginBottom: '0.8rem' }}>
+                No Upcoming Events Scheduled
+              </h3>
+              <p style={{ color: 'var(--text-muted)', maxWidth: '540px', margin: '0 auto', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                Workshops, bootcamps, and festival sessions are announced regularly. Check back soon or inquire via WhatsApp for private choreography.
+              </p>
+            </div>
+          ) : (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+              gap: 'clamp(1.5rem, 3vw, 2.5rem)',
+              marginBottom: '5rem'
+            }}>
+              {events.map((item) => (
               <div key={item._id} className="class-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
                   <div className="class-card-image-box">
@@ -129,6 +146,7 @@ export const EventsPage = () => {
               </div>
             ))}
           </div>
+          )}
 
           <div id="event-enrol" style={{ maxWidth: '780px', margin: '0 auto' }}>
             <LeadEnquiryForm defaultStyle="Authentic Garba Workshop" />

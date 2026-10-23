@@ -3,37 +3,12 @@ import { Play, Film, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const DanceMomentsVideo = ({ videos = [], onPlayVideo }) => {
-  const videoList = videos.length > 0
-    ? videos
-    : [
-        {
-          _id: '1',
-          title: 'OM NATRAJ DANCE STUDIO - Studio Reel 2026',
-          description: 'A cinematic montage capturing our contemporary, Bollywood, and Garba choreography.',
-          videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
-          posterUrl: '/images/hero-dance.jpg',
-          duration: '01:45',
-          featured: true
-        },
-        {
-          _id: '2',
-          title: 'Grand Navratri Garba Highlights',
-          description: 'Live performance of our senior Garba troupe performing authentic Gujarati steps.',
-          videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-          posterUrl: '/images/garba-dance.jpg',
-          duration: '02:10',
-          featured: false
-        },
-        {
-          _id: '3',
-          title: 'Royal Wedding Sangeet Choreography',
-          description: 'Romantic couple choreography and energetic family flashmob staged with grace.',
-          videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-          posterUrl: '/images/wedding-dance.jpg',
-          duration: '01:50',
-          featured: false
-        }
-      ];
+  // If no videos exist in the database, do not render fake static data
+  if (!videos || videos.length === 0) {
+    return null;
+  }
+
+  const videoList = videos;
 
   const featured = videoList.find(v => v.featured) || videoList[0];
   const others = videoList.filter(v => v._id !== featured._id);

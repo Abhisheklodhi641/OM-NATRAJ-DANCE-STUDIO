@@ -48,13 +48,21 @@ export const api = {
     if (typeof param === 'string' && param.startsWith('?')) return request(`/gallery${param}`);
     return request(`/gallery?category=${param}`);
   },
-  getVideos: () => request('/videos'),
+  getVideos: (param) => {
+    if (!param) return request('/videos');
+    if (typeof param === 'string' && param.startsWith('?')) return request(`/videos${param}`);
+    return request(`/videos?category=${param}`);
+  },
   getProducts: (param) => {
     if (!param) return request('/products');
     if (typeof param === 'string' && param.startsWith('?')) return request(`/products${param}`);
     return request(`/products?category=${param}`);
   },
-  getTestimonials: () => request('/testimonials'),
+  getTestimonials: (param) => {
+    if (!param) return request('/testimonials');
+    if (typeof param === 'string' && param.startsWith('?')) return request(`/testimonials${param}`);
+    return request(`/testimonials?status=${param}`);
+  },
   submitLead: (leadData) => request('/leads', { method: 'POST', body: JSON.stringify(leadData) }),
 
   // Admin Auth

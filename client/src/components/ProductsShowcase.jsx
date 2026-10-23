@@ -8,40 +8,12 @@ export const ProductsShowcase = ({ products = [] }) => {
   const [selectedSizes, setSelectedSizes] = useState({});
   const [quantities, setQuantities] = useState({});
 
-  const productList = products.length > 0
-    ? products
-    : [
-        {
-          _id: '1',
-          name: 'Handcrafted Navratri Garba Chaniya Choli Set',
-          price: 3499,
-          originalPrice: 4999,
-          description: 'Exclusive artisanal Garba outfit featuring authentic Kutchi embroidery, real glass mirror accents, heavy flare ghagra, matching blouse, and embroidered dupatta.',
-          images: ['/images/garba-dress.jpg'],
-          sizes: ['S', 'M', 'L', 'XL', 'Free Size'],
-          stockStatus: 'in_stock'
-        },
-        {
-          _id: '2',
-          name: 'Professional Brass Ghungroo Dance Bells (100 Bells)',
-          price: 1299,
-          originalPrice: 1799,
-          description: 'Heavy resonant brass bells woven onto premium velvet and leather padded cords, delivering rich acoustic clarity for classical and folk dance practice.',
-          images: ['/images/garba-dress.jpg'],
-          sizes: ['Standard Pair (100 Bells)', 'Master Pair (150 Bells)'],
-          stockStatus: 'in_stock'
-        },
-        {
-          _id: '3',
-          name: 'Carved Lacquer Folk Dandiya Sticks (Pair)',
-          price: 499,
-          originalPrice: 799,
-          description: 'Solid wood hand-carved dandiya sticks with balanced grip and vibrant festival lacquer finish, designed for high-energy Garba nights.',
-          images: ['/images/garba-dance.jpg'],
-          sizes: ['15-inch standard'],
-          stockStatus: 'in_stock'
-        }
-      ];
+  // If no products are published in the database, do not render fake static data
+  if (!products || products.length === 0) {
+    return null;
+  }
+
+  const productList = products;
 
   const handleSizeSelect = (productId, size) => {
     setSelectedSizes(prev => ({ ...prev, [productId]: size }));

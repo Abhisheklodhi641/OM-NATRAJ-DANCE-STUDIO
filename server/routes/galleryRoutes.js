@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { StorageService } from '../services/storageService.js';
 import { protectAdmin } from '../middleware/authMiddleware.js';
+import { deleteMediaByUrl } from '../middleware/uploadMiddleware.js';
 
 const router = express.Router();
 
@@ -85,6 +86,16 @@ router.delete('/:id', protectAdmin, async (req, res) => {
     }
     const deleted = await StorageService.findByIdAndDelete('gallery', id);
     if (!deleted) return res.status(404).json({ success: false, message: 'Item not found' });
+
+    // Permanently destroy Cloudinary / storage asset if present
+    if (deleted.imageUrl) {
+      try {
+        await deleteMediaByUrl(deleted.imageUrl, deleted.mediaType || 'image');
+      } catch (mediaErr) {
+        console.warn('[Gallery Media Delete Warning]', mediaErr.message);
+      }
+    }
+
     res.json({ success: true, message: 'Gallery item deleted' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to delete gallery item' });

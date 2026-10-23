@@ -289,15 +289,30 @@ export const AdminClasses = () => {
                 </div>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Instructor / Faculty</label>
-                <input
-                  type="text"
-                  value={formData.instructor}
-                  onChange={(e) => setFormData({ ...formData, instructor: e.target.value })}
-                  placeholder="e.g. Lead Garba Choreographer"
-                  className="form-input"
-                />
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
+                <div className="form-group">
+                  <label className="form-label">Instructor / Faculty</label>
+                  <input
+                    type="text"
+                    value={formData.instructor}
+                    onChange={(e) => setFormData({ ...formData, instructor: e.target.value })}
+                    placeholder="e.g. Lead Garba Choreographer"
+                    className="form-input"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Class Status</label>
+                  <select
+                    value={formData.status || 'active'}
+                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                    className="form-input"
+                    style={{ background: '#1c1c24', color: '#fff' }}
+                  >
+                    <option value="active">Active (Visible on Site)</option>
+                    <option value="inactive">Inactive (Archived)</option>
+                  </select>
+                </div>
               </div>
 
               <div className="form-group">

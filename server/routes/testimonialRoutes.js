@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { StorageService } from '../services/storageService.js';
 import { protectAdmin } from '../middleware/authMiddleware.js';
+import { deleteMediaByUrl } from '../middleware/uploadMiddleware.js';
 
 const router = express.Router();
 
@@ -81,6 +82,16 @@ router.delete('/:id', protectAdmin, async (req, res) => {
     }
     const deleted = await StorageService.findByIdAndDelete('testimonials', id);
     if (!deleted) return res.status(404).json({ success: false, message: 'Testimonial not found' });
+
+    // Permanently destroy Cloudinary / storage asset if present
+    if (deleted.photo) {
+      try {
+        await deleteMediaByUrl(deleted.photo, 'image');
+      } catch (mediaErr) {
+        console.warn('[Testimonial Media Delete Warning]', mediaErr.message);
+      }
+    }
+
     res.json({ success: true, message: 'Testimonial deleted' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to delete testimonial' });

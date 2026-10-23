@@ -260,7 +260,7 @@ export const AdminEvents = () => {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '1rem' }}>
                 <div className="form-group">
                   <label className="form-label">Location / Venue</label>
                   <input
@@ -281,6 +281,21 @@ export const AdminEvents = () => {
                     placeholder="e.g. Signature Workshop / Annual Concert"
                     className="form-input"
                   />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Event Status</label>
+                  <select
+                    value={formData.status || 'upcoming'}
+                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                    className="form-input"
+                    style={{ background: '#1c1c24', color: '#fff' }}
+                  >
+                    <option value="upcoming">Upcoming</option>
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
                 </div>
               </div>
 

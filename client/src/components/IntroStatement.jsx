@@ -71,12 +71,22 @@ export const IntroStatement = () => {
             marginBottom: '2rem'
           }}
         >
-          <div className="intro-reveal-line">
-            "Dance is not just about learning steps.
-          </div>
-          <div className="intro-reveal-line editorial-italic">
-            It's about finding your own rhythm."
-          </div>
+          {settings.introHeading ? (
+            settings.introHeading.split('\n').map((line, idx, arr) => (
+              <div key={idx} className={`intro-reveal-line ${idx > 0 ? 'editorial-italic' : ''}`}>
+                {idx === 0 && !line.startsWith('"') ? `"${line}` : line}{idx === arr.length - 1 && !line.endsWith('"') ? '"' : ''}
+              </div>
+            ))
+          ) : (
+            <>
+              <div className="intro-reveal-line">
+                "Dance is not just about learning steps.
+              </div>
+              <div className="intro-reveal-line editorial-italic">
+                It's about finding your own rhythm."
+              </div>
+            </>
+          )}
         </blockquote>
 
         <p style={{

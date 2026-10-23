@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Upload, Trash2, Eye, EyeOff, Play, Film, X, Check } from 'lucide-react';
 import { api } from '../../services/api';
+import { MediaModal } from '../../components/MediaModal';
 
 export const AdminVideos = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [activeVideo, setActiveVideo] = useState(null);
   const [uploadingVideo, setUploadingVideo] = useState(false);
   const [uploadingPoster, setUploadingPoster] = useState(false);
 
@@ -21,7 +23,7 @@ export const AdminVideos = () => {
 
   const fetchVideos = async () => {
     try {
-      const res = await api.getVideos();
+      const res = await api.getVideos('?all=true');
       if (res.success && res.videos) {
         setVideos(res.videos);
       }
@@ -35,6 +37,15 @@ export const AdminVideos = () => {
   useEffect(() => {
     fetchVideos();
   }, []);
+
+  const handleTogglePublish = async (id, currentStatus) => {
+    try {
+      await api.updateVideo(id, { published: !currentStatus });
+      setVideos(prev => prev.map(v => (v._id === id ? { ...v, published: !currentStatus } : v)));
+    } catch (err) {
+      alert('Failed to toggle status: ' + err.message);
+    }
+  };
 
   const handleVideoUpload = async (e) => {
     const file = e.target.files[0];
@@ -139,7 +150,11 @@ export const AdminVideos = () => {
       }}>
         {videos.map((vid) => (
           <div key={vid._id} className="admin-card" style={{ padding: 0, overflow: 'hidden' }}>
-            <div style={{ position: 'relative', height: '200px', background: '#000' }}>
+            <div
+              style={{ position: 'relative', height: '200px', background: '#000', cursor: 'pointer' }}
+              onClick={() => setActiveVideo(vid)}
+              title="Click to play video"
+            >
               <img
                 src={vid.posterUrl || '/images/hero-dance.jpg'}
                 alt={vid.title}
@@ -151,7 +166,8 @@ export const AdminVideos = () => {
                 background: 'rgba(0,0,0,0.4)',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                transition: 'background 0.2s ease'
               }}>
                 <div style={{
                   width: '52px',
@@ -161,7 +177,8 @@ export const AdminVideos = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#070709'
+                  color: '#070709',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
                 }}>
                   <Play size={24} fill="#070709" style={{ marginLeft: '3px' }} />
                 </div>
@@ -172,10 +189,35 @@ export const AdminVideos = () => {
                 top: '12px',
                 right: '12px',
                 display: 'flex',
-                gap: '8px'
+                gap: '8px',
+                zIndex: 2
               }}>
                 <button
-                  onClick={() => handleDelete(vid._id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleTogglePublish(vid._id, vid.published);
+                  }}
+                  style={{
+                    background: vid.published !== false ? 'rgba(76, 175, 80, 0.85)' : 'rgba(255, 152, 0, 0.85)',
+                    border: 'none',
+                    color: '#fff',
+                    borderRadius: '50%',
+                    width: '32px',
+                    height: '32px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer'
+                  }}
+                  title={vid.published !== false ? 'Published (Click to hide)' : 'Unpublished (Click to show)'}
+                >
+                  {vid.published !== false ? <Eye size={15} /> : <EyeOff size={15} />}
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(vid._id);
+                  }}
                   style={{
                     background: 'rgba(244, 67, 54, 0.85)',
                     border: 'none',
@@ -358,6 +400,14 @@ export const AdminVideos = () => {
           </div>
         </div>
       )}
+      {/* Video Lightbox Player */}
+      <MediaModal
+        isOpen={!!activeVideo}
+        onClose={() => setActiveVideo(null)}
+        mediaUrl={activeVideo?.videoUrl || activeVideo?.url}
+        mediaType="video"
+        title={activeVideo?.title}
+      />
     </div>
   );
 };

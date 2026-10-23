@@ -9,60 +9,18 @@ export const HorizontalGallery = ({ items = [], onImageClick }) => {
   const containerRef = useRef(null);
   const scrollTrackRef = useRef(null);
 
-  const fallbackItems = [
-    {
-      id: 1,
-      title: 'MOVE.',
-      subtitle: 'The Velocity of Kathak & Fusion',
-      image: '/images/hero-dance.jpg',
-      category: 'Contemporary'
-    },
-    {
-      id: 2,
-      title: 'FEEL.',
-      subtitle: 'The Soul of Traditional Garba',
-      image: '/images/garba-dance.jpg',
-      category: 'Garba'
-    },
-    {
-      id: 3,
-      title: 'EXPRESS.',
-      subtitle: 'Urban Stage Presence & Power',
-      image: '/images/bollywood-hiphop.jpg',
-      category: 'Hip-Hop'
-    },
-    {
-      id: 4,
-      title: 'CONNECT.',
-      subtitle: 'Romantic Wedding Sangeet Glow',
-      image: '/images/wedding-dance.jpg',
-      category: 'Wedding Dance'
-    },
-    {
-      id: 5,
-      title: 'INSPIRE.',
-      subtitle: 'Joyful Little Steps in Motion',
-      image: '/images/kids-dance.jpg',
-      category: 'Kids Batch'
-    },
-    {
-      id: 6,
-      title: 'DISCOVER.',
-      subtitle: 'Sprung Wooden Dance Floor',
-      image: '/images/studio-interior.jpg',
-      category: 'Studio Space'
-    }
-  ];
+  // If no gallery items exist in the database, do not render fake static data
+  if (!items || items.length === 0) {
+    return null;
+  }
 
-  const galleryItems = items && items.length > 0
-    ? items.map((item, idx) => ({
-        id: item._id || item.id || idx,
-        title: item.title,
-        subtitle: item.description || item.subtitle || item.category,
-        image: item.imageUrl || item.image,
-        category: item.category
-      }))
-    : fallbackItems;
+  const galleryItems = items.map((item, idx) => ({
+    id: item._id || item.id || idx,
+    title: item.title,
+    subtitle: item.description || item.subtitle || item.category,
+    image: item.imageUrl || item.image,
+    category: item.category
+  }));
 
   const scrollLeft = () => {
     if (scrollTrackRef.current) {

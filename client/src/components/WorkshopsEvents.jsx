@@ -8,40 +8,12 @@ export const WorkshopsEvents = ({ events = [] }) => {
   const studioName = settings?.studioName || 'Om Natraj Dance Studio';
   const city = settings?.city || '';
 
-  const eventList = events.length > 0
-    ? events
-    : [
-        {
-          _id: '1',
-          name: 'Grand Navratri Garba Intensive Bootcamp',
-          date: 'OCT 24 - 28, 2026',
-          time: '6:30 PM - 9:00 PM',
-          location: 'Om Natraj Dance Studio, Main Arena',
-          description: 'An electrifying 5-day workshop covering authentic Mandvi steps, rapid spinning endurance, and group formations before the festival season kicks off.',
-          image: '/images/garba-dance.jpg',
-          badge: 'Signature Workshop'
-        },
-        {
-          name: 'Sangeet & Wedding Dance Masterclass',
-          _id: '2',
-          date: 'NOV 14 - 15, 2026',
-          time: '5:00 PM - 8:00 PM',
-          location: 'Om Natraj Dance Studio, Hall B',
-          description: 'Exclusive 2-day session for brides, grooms, and bridal entourages to polish transitions, stage lift basics, and camera-ready dance poses.',
-          image: '/images/wedding-dance.jpg',
-          badge: 'Couples & Family'
-        },
-        {
-          name: 'Annual Studio Showcase: "Tarang 2026"',
-          _id: '3',
-          date: 'DEC 20, 2026',
-          time: '6:00 PM onwards',
-          location: 'Grand Auditorium Stage',
-          description: 'Our premier annual dance festival where all studio students take the stage in front of a live 1,000+ audience.',
-          image: '/images/hero-dance.jpg',
-          badge: 'Annual Concert'
-        }
-      ];
+  // If no events are scheduled in the database, do not render fake static data
+  if (!events || events.length === 0) {
+    return null;
+  }
+
+  const eventList = events;
 
   return (
     <section className="section-spacer" style={{ background: 'var(--bg-secondary)', position: 'relative' }}>

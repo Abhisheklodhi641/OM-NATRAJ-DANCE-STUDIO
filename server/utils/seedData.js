@@ -156,21 +156,21 @@ export const seedDatabase = async () => {
     };
 
     const existingSettings = await SettingsModel.find();
-    if (existingSettings.length === 0) {
+    const isAlreadyInitialized = existingSettings.length > 0;
+    if (!isAlreadyInitialized) {
       await SettingsModel.create(settingsData);
       stats.inserted++;
       stats.modules.settings = { inserted: 1, updated: 0, skipped: 0 };
       console.log('[Seed] Studio Settings document inserted');
     } else {
-      await SettingsModel.findByIdAndUpdate(existingSettings[0]._id, settingsData, { new: true });
       if (existingSettings.length > 1) {
         for (let i = 1; i < existingSettings.length; i++) {
           await SettingsModel.findByIdAndDelete(existingSettings[i]._id);
         }
       }
-      stats.updated++;
-      stats.modules.settings = { inserted: 0, updated: 1, skipped: 0 };
-      console.log('[Seed] Studio Settings updated & duplicate-checked');
+      stats.skipped++;
+      stats.modules.settings = { inserted: 0, updated: 0, skipped: 1 };
+      console.log('[Seed] Studio Settings document already exists — preserved without overwriting');
     }
 
     // 4. Classes (6 Disciplines)
@@ -250,19 +250,19 @@ export const seedDatabase = async () => {
     ];
 
     stats.modules.classes = { inserted: 0, updated: 0, skipped: 0 };
-    for (const c of classesData) {
-      const existing = await ClassModel.findOne({ name: c.name });
-      if (!existing) {
+    const classCount = await ClassModel.countDocuments();
+    if ((!isAlreadyInitialized && classCount === 0) || process.env.FORCE_SEED === 'true') {
+      for (const c of classesData) {
         await ClassModel.create(c);
         stats.inserted++;
         stats.modules.classes.inserted++;
-      } else {
-        await ClassModel.findByIdAndUpdate(existing._id, c, { new: true });
-        stats.updated++;
-        stats.modules.classes.updated++;
       }
+      console.log(`[Seed] ${classesData.length} initial classes inserted into empty collection`);
+    } else {
+      stats.skipped += classCount;
+      stats.modules.classes.skipped = classCount;
+      console.log(`[Seed] Classes collection has ${classCount} records — preserved without overwriting`);
     }
-    console.log(`[Seed] ${classesData.length} classes upserted with Cloudinary media`);
 
     // 5. Events / Workshops (3 Events)
     const eventsData = [
@@ -299,19 +299,19 @@ export const seedDatabase = async () => {
     ];
 
     stats.modules.events = { inserted: 0, updated: 0, skipped: 0 };
-    for (const ev of eventsData) {
-      const existing = await EventModel.findOne({ name: ev.name });
-      if (!existing) {
+    const eventCount = await EventModel.countDocuments();
+    if ((!isAlreadyInitialized && eventCount === 0) || process.env.FORCE_SEED === 'true') {
+      for (const ev of eventsData) {
         await EventModel.create(ev);
         stats.inserted++;
         stats.modules.events.inserted++;
-      } else {
-        await EventModel.findByIdAndUpdate(existing._id, ev, { new: true });
-        stats.updated++;
-        stats.modules.events.updated++;
       }
+      console.log(`[Seed] ${eventsData.length} initial events inserted into empty collection`);
+    } else {
+      stats.skipped += eventCount;
+      stats.modules.events.skipped = eventCount;
+      console.log(`[Seed] Events collection has ${eventCount} records — preserved without overwriting`);
     }
-    console.log(`[Seed] ${eventsData.length} events upserted with Cloudinary media`);
 
     // 6. Products (3 Items)
     const productsData = [
@@ -354,19 +354,19 @@ export const seedDatabase = async () => {
     ];
 
     stats.modules.products = { inserted: 0, updated: 0, skipped: 0 };
-    for (const p of productsData) {
-      const existing = await ProductModel.findOne({ name: p.name });
-      if (!existing) {
+    const productCount = await ProductModel.countDocuments();
+    if ((!isAlreadyInitialized && productCount === 0) || process.env.FORCE_SEED === 'true') {
+      for (const p of productsData) {
         await ProductModel.create(p);
         stats.inserted++;
         stats.modules.products.inserted++;
-      } else {
-        await ProductModel.findByIdAndUpdate(existing._id, p, { new: true });
-        stats.updated++;
-        stats.modules.products.updated++;
       }
+      console.log(`[Seed] ${productsData.length} initial products inserted into empty collection`);
+    } else {
+      stats.skipped += productCount;
+      stats.modules.products.skipped = productCount;
+      console.log(`[Seed] Products collection has ${productCount} records — preserved without overwriting`);
     }
-    console.log(`[Seed] ${productsData.length} products upserted with Cloudinary media`);
 
     // 7. Gallery (6 Items)
     const galleryData = [
@@ -433,19 +433,19 @@ export const seedDatabase = async () => {
     ];
 
     stats.modules.gallery = { inserted: 0, updated: 0, skipped: 0 };
-    for (const g of galleryData) {
-      const existing = await GalleryModel.findOne({ title: g.title });
-      if (!existing) {
+    const galleryCount = await GalleryModel.countDocuments();
+    if ((!isAlreadyInitialized && galleryCount === 0) || process.env.FORCE_SEED === 'true') {
+      for (const g of galleryData) {
         await GalleryModel.create(g);
         stats.inserted++;
         stats.modules.gallery.inserted++;
-      } else {
-        await GalleryModel.findByIdAndUpdate(existing._id, g, { new: true });
-        stats.updated++;
-        stats.modules.gallery.updated++;
       }
+      console.log(`[Seed] ${galleryData.length} initial gallery items inserted into empty collection`);
+    } else {
+      stats.skipped += galleryCount;
+      stats.modules.gallery.skipped = galleryCount;
+      console.log(`[Seed] Gallery collection has ${galleryCount} records — preserved without overwriting`);
     }
-    console.log(`[Seed] ${galleryData.length} gallery items upserted with Cloudinary media`);
 
     // 8. Videos (3 Items)
     const videosData = [
@@ -479,25 +479,19 @@ export const seedDatabase = async () => {
     ];
 
     stats.modules.videos = { inserted: 0, updated: 0, skipped: 0 };
-    for (const v of videosData) {
-      // Find by title or former title
-      const existing = await VideoModel.findOne({
-        $or: [
-          { title: v.title },
-          { title: 'Banmore Navratri Garba Highlights' }
-        ]
-      });
-      if (!existing) {
+    const videoCount = await VideoModel.countDocuments();
+    if ((!isAlreadyInitialized && videoCount === 0) || process.env.FORCE_SEED === 'true') {
+      for (const v of videosData) {
         await VideoModel.create(v);
         stats.inserted++;
         stats.modules.videos.inserted++;
-      } else {
-        await VideoModel.findByIdAndUpdate(existing._id, v, { new: true });
-        stats.updated++;
-        stats.modules.videos.updated++;
       }
+      console.log(`[Seed] ${videosData.length} initial videos inserted into empty collection`);
+    } else {
+      stats.skipped += videoCount;
+      stats.modules.videos.skipped = videoCount;
+      console.log(`[Seed] Videos collection has ${videoCount} records — preserved without overwriting`);
     }
-    console.log(`[Seed] ${videosData.length} videos upserted with Cloudinary media`);
 
     // 9. Testimonials (3 Items)
     const testimonialsData = [
@@ -525,19 +519,19 @@ export const seedDatabase = async () => {
     ];
 
     stats.modules.testimonials = { inserted: 0, updated: 0, skipped: 0 };
-    for (const t of testimonialsData) {
-      const existing = await TestimonialModel.findOne({ name: t.name });
-      if (!existing) {
+    const testimonialCount = await TestimonialModel.countDocuments();
+    if ((!isAlreadyInitialized && testimonialCount === 0) || process.env.FORCE_SEED === 'true') {
+      for (const t of testimonialsData) {
         await TestimonialModel.create(t);
         stats.inserted++;
         stats.modules.testimonials.inserted++;
-      } else {
-        await TestimonialModel.findByIdAndUpdate(existing._id, t, { new: true });
-        stats.updated++;
-        stats.modules.testimonials.updated++;
       }
+      console.log(`[Seed] ${testimonialsData.length} initial testimonials inserted into empty collection`);
+    } else {
+      stats.skipped += testimonialCount;
+      stats.modules.testimonials.skipped = testimonialCount;
+      console.log(`[Seed] Testimonials collection has ${testimonialCount} records — preserved without overwriting`);
     }
-    console.log(`[Seed] ${testimonialsData.length} testimonials upserted`);
 
     console.log('[Seed] Database initialization and Cloudinary media linkage complete!');
     return stats;

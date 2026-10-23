@@ -18,7 +18,7 @@ export const PinnedStory = () => {
       title: 'FIND YOUR RHYTHM',
       subtitle: 'The Awakening of Movement',
       desc: 'Step into an inspiring environment where rhythm becomes second nature. Whether starting with basic counts or Kathak tatkar, you unlock your body’s natural instinct for tempo and musicality.',
-      image: settings?.heroMedia || 'https://res.cloudinary.com/dwcat1ge5/image/upload/v1792325107/om_natraj_dance_studio/static/hero-dance.jpg',
+      image: settings?.heroMedia || '/images/hero-dance.jpg',
       quote: 'Every dancer starts with a single beat.'
     },
     {
@@ -26,7 +26,7 @@ export const PinnedStory = () => {
       title: 'BUILD YOUR CONFIDENCE',
       subtitle: 'Technique Meets Emotion',
       desc: 'Move past self-doubt. Under the guidance of master choreographers, you develop sharp isolations, graceful arm extensions, posture, and facial expressions that speak louder than words.',
-      image: settings?.ctaImage || 'https://res.cloudinary.com/dwcat1ge5/image/upload/v1792325105/om_natraj_dance_studio/static/garba-dance.jpg',
+      image: settings?.ctaImage || '/images/garba-dance.jpg',
       quote: 'Confidence is born when technique turns into feeling.'
     },
     {
@@ -34,7 +34,7 @@ export const PinnedStory = () => {
       title: 'OWN THE STAGE',
       subtitle: 'The Electric Spotlight',
       desc: 'From intimate studio reels to grand Navratri arenas and annual concerts in front of 1,000+ viewers, you experience the unforgettable rush of live applause and artistic fulfillment.',
-      image: 'https://res.cloudinary.com/dwcat1ge5/image/upload/v1792325112/om_natraj_dance_studio/static/wedding-dance.jpg',
+      image: settings?.aboutImage || '/images/wedding-dance.jpg',
       quote: 'When the spotlight hits, you don’t just perform — you inspire.'
     }
   ];

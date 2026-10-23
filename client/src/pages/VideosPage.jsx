@@ -67,14 +67,30 @@ export const VideosPage = () => {
       <section className="section-spacer" style={{ background: 'var(--bg-secondary)', paddingTop: '4rem' }}>
         <div className="site-container">
           
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
-            gap: 'clamp(1.5rem, 3vw, 2.5rem)'
-          }}>
-            {videos.map((item) => (
-              <div
-                key={item._id}
+          {videos.length === 0 && !loading ? (
+            <div style={{
+              textAlign: 'center',
+              padding: '4rem 1.5rem',
+              background: 'rgba(255,255,255,0.02)',
+              border: '1px solid var(--border-subtle)',
+              borderRadius: '4px'
+            }}>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: '#fff', marginBottom: '0.8rem' }}>
+                No Video Recordings Available
+              </h3>
+              <p style={{ color: 'var(--text-muted)', maxWidth: '540px', margin: '0 auto', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                New performance clips and studio rehearsal highlights are uploaded regularly. Stay tuned or follow our official social channels.
+              </p>
+            </div>
+          ) : (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+              gap: 'clamp(1.5rem, 3vw, 2.5rem)'
+            }}>
+              {videos.map((item) => (
+                <div
+                  key={item._id}
                 onClick={() => playVideo(item)}
                 style={{
                   position: 'relative',
@@ -160,6 +176,7 @@ export const VideosPage = () => {
               </div>
             ))}
           </div>
+          )}
 
         </div>
       </section>

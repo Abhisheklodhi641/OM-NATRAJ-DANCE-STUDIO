@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Search, Trash2, MessageSquare, Phone, Mail, Filter, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { api } from '../../services/api';
 
+const formatWhatsAppNumber = (phone) => {
+  const digits = (phone || '').replace(/[^0-9]/g, '');
+  if (digits.length === 10) return `91${digits}`;
+  return digits;
+};
+
 export const AdminLeads = () => {
   const [leads, setLeads] = useState([]);
   const [filterStatus, setFilterStatus] = useState('ALL');
@@ -166,7 +172,7 @@ export const AdminLeads = () => {
                 </thead>
                 <tbody>
                   {leads.map((lead) => {
-                    const cleanPhone = (lead.phone || '').replace(/[^0-9]/g, '');
+                    const cleanPhone = formatWhatsAppNumber(lead.phone);
                     return (
                       <tr
                         key={lead._id}
@@ -308,7 +314,7 @@ export const AdminLeads = () => {
             {/* Quick Actions */}
             <div style={{ display: 'flex', gap: '8px', marginBottom: '1.5rem' }}>
               <a
-                href={`https://wa.me/${(selectedLead.phone || '').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi ${selectedLead.name}, this is Om Natraj Dance Studio following up on your enquiry!`)}`}
+                href={`https://wa.me/${formatWhatsAppNumber(selectedLead.phone)}?text=${encodeURIComponent(`Hi ${selectedLead.name}, this is Om Natraj Dance Studio following up on your enquiry!`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-whatsapp"

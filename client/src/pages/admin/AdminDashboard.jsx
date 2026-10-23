@@ -21,11 +21,11 @@ export const AdminDashboard = () => {
       try {
         const [leadsRes, clsRes, evRes, galRes, vidRes, prodRes] = await Promise.allSettled([
           api.getLeads(),
-          api.getClasses(),
+          api.getClasses(''),
           api.getEvents(),
-          api.getGallery(),
-          api.getVideos(),
-          api.getProducts()
+          api.getGallery('?all=true'),
+          api.getVideos('?all=true'),
+          api.getProducts('?all=true')
         ]);
 
         const leads = leadsRes.status === 'fulfilled' && leadsRes.value.leads ? leadsRes.value.leads : [];
